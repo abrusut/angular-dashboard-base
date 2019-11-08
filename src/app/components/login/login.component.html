@@ -1,43 +1,41 @@
 <!-- ============================================================== -->
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
+<!-- Outer Row -->
+<div class="row justify-content-center">
 
-<section id="wrapper" class="login-register login-sidebar" style="background-image:url(../assets/images/background/login-register.jpg);">
-    <div class="login-box card">
-        <div class="card-body">
-            <form ngNativeValidate #f="ngForm" class="form-horizontal form-material" id="loginform" (ngSubmit)="ingresar(f)">
-                <a href="javascript:void(0)" class="text-center db"><img src="../assets/images/logo-icon.png" alt="Home" /><br/><img src="../assets/images/logo-text.png" alt="Home" /></a>
-                <div class="form-group m-t-40">
-                    <div class="col-xs-12">
-                        <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Correo del Usuario / Username">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
+                </div>
+                <form class="user">
+                  <div class="form-group">
+                      <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Correo del Usuario / Username">
+                  </div>
+                  <div class="form-group">
+                      <input ngModel name="password" class="form-control" type="password" required placeholder="Password">
+                  </div>
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox small">
+                        <input [(ngModel)]="recuerdame" name="recuerdame" id="customCheck" type="checkbox" class="custom-control-input">
+                      <label class="custom-control-label" for="customCheck">Remember Me</label>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-12">
-                        <input ngModel name="password" class="form-control" type="password" required placeholder="Password">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-12">
-                        <div class="checkbox checkbox-primary pull-left p-t-0">
-                            <input [(ngModel)]="recuerdame" name="recuerdame" id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
-                            <label for="checkbox-signup"> Recordarme </label>
-                        </div>
-                        <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Perdio la clave?</a> </div>
-                </div>
-                <div class="form-group text-center m-t-20">
-                    <div class="col-xs-12">
-                        <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Log In</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 m-t-10 text-center">
-                        <div class="social">
-                            <button type="button" id="btnGoogle" class="btn btn-googleplus" data-toggle="tooltip" title="Login con Google"> <i aria-hidden="true" class="fa fa-google-plus"></i> </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group m-b-0">
+                  </div>
+                  <a href="index.html" class="btn btn-primary btn-user btn-block">
+                    Login
+                  </a>
+
+                </form>
+                <hr>
+                <div class="text-center">
                     <div class="col-sm-12 text-center">
                         No tiene una cuenta? <a routerLink="/register" class="text-primary m-l-5"><b>Registrarse</b></a>
                     </div>
@@ -49,28 +47,13 @@
                 <span>{{this.error.mensaje}}</span>
               </div>
 
-            </form>
-            <form class="form-horizontal" id="recoverform" action="index.html">
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <h3>Recover Password</h3>
-                        <p class="text-muted">Ingrese su Email y le enviaremos las instrucciones! </p>
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <div class="col-xs-12">
-                        <input class="form-control" type="text" required="" placeholder="Email">
-                    </div>
-                </div>
-                <div class="form-group text-center m-t-20">
-                    <div class="col-xs-12">
-                        <button class="btn btn-primary btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Reset</button>
-                    </div>
-                </div>
-            </form>
+
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
     </div>
-</section>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
+
+  </div>

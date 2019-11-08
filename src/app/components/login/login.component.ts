@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent implements OnInit {
 
-  user: string = '';
+  username: string = '';
   userLogin: UserLogin = {};
   recuerdame: boolean = false;
   auth2: any;
@@ -27,14 +27,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
     this.googleInit();
-    this.user = localStorage.getItem('user') || '';
-    if ( this.user.length > 0) // Si tengo algo en localStorage es por que ya se logueo y puso recordar
+    this.username = localStorage.getItem('user') || '';
+    if ( this.username.length > 0) // Si tengo algo en localStorage es por que ya se logueo y puso recordar
     {
       this.recuerdame = true;
     }
   }
 
-  googleInit(){
+  googleInit() {
     gapi.load('auth2', () => {
       this.auth2 = gapi.auth2.init({
         client_id: '512406415762-70vv5qf9e20fhle0ijebnrsfj3na5ufb.apps.googleusercontent.com',

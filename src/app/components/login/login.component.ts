@@ -5,7 +5,6 @@ import { UsuarioService } from '../../services/service.index';
 import { Usuario } from '../../domain/usuario.domain';
 import { UserLogin } from '../../domain/userLogin.domain';
 
-declare function init_plugins();
 declare const gapi: any;
 import Swal from 'sweetalert2';
 
@@ -26,7 +25,7 @@ export class LoginComponent implements OnInit {
               public usuarioService: UsuarioService) { }
 
   ngOnInit() {
-    init_plugins();
+
     this.googleInit();
     this.user = localStorage.getItem('user') || '';
     if ( this.user.length > 0) // Si tengo algo en localStorage es por que ya se logueo y puso recordar

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-// Esto esta en common.js y son metodos de jquerycl
-declare function init_plugins();
+
 
 @Component({
   selector: 'app-nopagefound',
@@ -10,11 +9,11 @@ declare function init_plugins();
 })
 export class NopagefoundComponent implements OnInit {
 
-  anio:number = new Date().getFullYear();
+  anio: number = new Date().getFullYear();
   constructor() { }
 
   ngOnInit() {
-    init_plugins();
+
   }
 
 }

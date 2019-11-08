@@ -10,7 +10,7 @@ export class SettingsService {
   };
 
   constructor(@Inject(DOCUMENT) private document) {
-    this.cargarAjustes();
+    // this.cargarAjustes();
    }
 
   guardarAjustes() {

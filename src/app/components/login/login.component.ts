@@ -5,7 +5,6 @@ import { UsuarioService } from '../../services/service.index';
 import { Usuario } from '../../domain/usuario.domain';
 import { UserLogin } from '../../domain/userLogin.domain';
 
-declare const gapi: any;
 import Swal from 'sweetalert2';
 
 @Component({
@@ -25,8 +24,6 @@ export class LoginComponent implements OnInit {
               public usuarioService: UsuarioService) { }
 
   ngOnInit() {
-
-    this.googleInit();
     this.username = localStorage.getItem('user') || '';
     if ( this.username.length > 0) // Si tengo algo en localStorage es por que ya se logueo y puso recordar
     {
@@ -34,36 +31,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  googleInit() {
-    gapi.load('auth2', () => {
-      this.auth2 = gapi.auth2.init({
-        client_id: '512406415762-70vv5qf9e20fhle0ijebnrsfj3na5ufb.apps.googleusercontent.com',
-        cookiepolicy: 'single_host_origin',
-        scope: 'profile email'
-      });
-
-      this.attachSigIn( document.getElementById('btnGoogle'));
-    });
-  }
-
-  attachSigIn(element)
-  {
-    this.auth2.attachClickHandler( element, {}, ( googleUser ) => {
-      const profile = googleUser.getBasicProfile();
-      console.log('Profile Google', profile);
-
-      const token = googleUser.getAuthResponse().id_token;
-      console.log('Token Google', token);
-
-      // Login
-      this.usuarioService.loginGoogle(token)
-        .subscribe(resp => {
-          // Login success
-          console.log('Respuesta login google', resp);
-          window.location.href = '#/dashboard'; // hago redireccion manual para que cargue bien el css
-        });
-    });
-  }
 
   ingresar(forma: NgForm) {
     if ( forma.invalid ) {

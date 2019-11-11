@@ -26,16 +26,13 @@ export class ProfileComponent implements OnInit {
   guardar(usuario: Usuario) {
     console.log(usuario);
 
-    this.usuario.nombre = usuario.nombre;
-
-    if (!this.usuario.google ) {
-      this.usuario.email = usuario.email;
-    }
+    this.usuario.name = usuario.name;
+    this.usuario.email = usuario.email;
 
     this.usuarioService.actualizarUsuario(this.usuario)
       .subscribe( ( resp: any ) => {
         if ( resp.ok ) {
-          Swal.fire('Usuario Actualizado', usuario.nombre, 'success');
+          Swal.fire('Usuario Actualizado', usuario.name, 'success');
         }
       });
   }
@@ -73,11 +70,11 @@ export class ProfileComponent implements OnInit {
     this.usuarioService.cambiarImagen(this.archivoASubir, this.usuario.id)
       .then( (resp: any) => {
         if (resp.ok) {
-          Swal.fire('Usuario Actualizado', this.usuario.nombre, 'success');
+          Swal.fire('Usuario Actualizado', this.usuario.name, 'success');
         }
 
       }).catch( (resp: any) => {
-        Swal.fire('Error Actualizado Imagen', this.usuario.nombre, 'error');
+        Swal.fire('Error Actualizado Imagen', this.usuario.name, 'error');
     });
 
 

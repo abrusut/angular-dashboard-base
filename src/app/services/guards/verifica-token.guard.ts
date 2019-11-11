@@ -1,55 +1,52 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {UsuarioService} from "../usuario/usuario.service";
+import {UsuarioService} from '../usuario/usuario.service';
 import { resolve } from 'url';
 
 @Injectable()
 export class VerificaTokenGuard implements CanActivate {
 
-  constructor(public usuarioService:UsuarioService, public router:Router)
-  {
+  constructor(public usuarioService: UsuarioService, public router: Router) {
 
   }
 
   canActivate(): Promise<boolean> | boolean {
     console.log('Inicio de verifica token guard');
-    let token = this.usuarioService.token;
-    let payload = JSON.parse(atob( token.split('.')[1]));
+    const token = this.usuarioService.token;
+    const payload = JSON.parse(atob( token.split('.')[1]));
     console.log(payload);
 
-    let expirado = this.expirado(payload.exp)
-    if(expirado){
+    const expirado = this.expirado(payload.exp);
+    if (expirado) {
       return false;
     }
 
     return this.verificaRenueva(payload.exp);
   }
 
-  expirado(fechaExpiracion:number)
-  {
-    let ahora = new Date().getTime() / 1000;
+  expirado(fechaExpiracion: number) {
+    const ahora = new Date().getTime() / 1000;
 
-    if(fechaExpiracion < ahora){
+    if (fechaExpiracion < ahora) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  verificaRenueva(fechaExpToken: number): Promise<boolean>{
-    return new Promise( ( resolve, reject) =>{
+  verificaRenueva(fechaExpToken: number): Promise<boolean> {
+    return new Promise( ( resolve, reject) => {
 
-      let tokenExp = new Date( fechaExpToken * 1000);
-      let ahora = new Date();
+      const tokenExp = new Date( fechaExpToken * 1000);
+      const ahora = new Date();
       ahora.setTime( ahora.getTime() + (4 * 60 * 60) ); // Incrementa 4hs
       console.log(tokenExp);
       console.log(ahora);
 
-      if(tokenExp.getTime() > ahora.getTime())
-      {// el token no esta proximo a vencer devuelvo true
+      if (tokenExp.getTime() > ahora.getTime()) {// el token no esta proximo a vencer devuelvo true
         resolve(true);
-      }else{
+      } else {
         // renuvo el token
         this.usuarioService.renuevaToken()
             .subscribe( () => {
@@ -58,8 +55,8 @@ export class VerificaTokenGuard implements CanActivate {
             () => {
               reject(false);
               this.router.navigate(['/login']);
-            } 
-          
+            }
+
           );
       }
 

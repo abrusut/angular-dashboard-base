@@ -84,7 +84,7 @@ export class UsuariosComponent implements OnInit {
 
     Swal.fire({
       title: 'Esta seguro?',
-      text: 'Esta apunto de borrar a ' + usuario.nombre,
+      text: 'Esta apunto de borrar a ' + usuario.name,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -95,7 +95,7 @@ export class UsuariosComponent implements OnInit {
       if (result.value) {
         this.usuarioService.borrarUsuario(usuario.id)
             .subscribe( (resp: any) => {
-              Swal.fire('Usuario Borrado', usuario.nombre, 'success');
+              Swal.fire('Usuario Borrado', usuario.name, 'success');
               this.cargarUsuarios();
             });
       }
@@ -105,7 +105,7 @@ export class UsuariosComponent implements OnInit {
   guardar( usuario: Usuario ) {
     this.usuarioService.actualizarUsuario(usuario)
       .subscribe( (resp: any) => {
-        Swal.fire('Usuario Actualizado', usuario.nombre, 'success');
+        Swal.fire('Usuario Actualizado', usuario.name, 'success');
         console.log(resp);
       });
 

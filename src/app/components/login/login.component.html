@@ -17,7 +17,7 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                 </div>
-                <form class="user">
+                <form  #forma="ngForm" (ngSubmit)="ingresar(forma)" >
                   <div class="form-group">
                       <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Correo del Usuario / Username">
                   </div>
@@ -30,15 +30,16 @@
                       <label class="custom-control-label" for="customCheck">Remember Me</label>
                     </div>
                   </div>
-                  <a href="index.html" class="btn btn-primary btn-user btn-block">
+                  <button type="submit" class="btn btn-primary btn-user btn-block">
                     Login
-                  </a>
+                  </button>
 
                 </form>
                 <hr>
                 <div class="text-center">
                     <div class="col-sm-12 text-center">
-                        No tiene una cuenta? <a routerLink="/register" class="text-primary m-l-5"><b>Registrarse</b></a>
+                        No tiene una cuenta? <a [routerLink]="['/register']"
+                         class="text-primary m-l-5"><b>Registrarse</b></a>
                     </div>
                 </div>
 

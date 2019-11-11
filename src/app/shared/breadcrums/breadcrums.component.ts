@@ -20,15 +20,15 @@ export class BreadcrumsComponent implements OnInit {
     this.getDataRoute()
       .subscribe(data => {
           // console.log(data);
+          if (data && data.titulo !== undefined && data.descripcion !==  undefined) {
+            this.label = data.titulo;
+            this.descripcion = data.descripcion;
+            this.title.setTitle( this.label );
 
-          this.label = data.titulo;
-          this.descripcion = data.descripcion;
-          this.title.setTitle( this.label );
-
-          this.addMetaTag('description', this.descripcion);
-          this.addMetaTag('author', 'Andres Brusutti');
-          this.addMetaTag('keywords', 'Ministerio Produccion, Santa Fe');
-
+            this.addMetaTag('description', this.descripcion);
+            this.addMetaTag('author', 'Andres Brusutti');
+            this.addMetaTag('keywords', 'Ministerio Produccion, Santa Fe');
+          }
         });
 
   }

@@ -18,7 +18,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 // Componentes
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/login/register.component';
+import { RegisterComponent } from './components/register/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.modulo';
 

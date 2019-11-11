@@ -6,7 +6,7 @@ import { Usuario } from '../../domain/usuario.domain';
 import { UserLogin } from '../../domain/userLogin.domain';
 
 import Swal from 'sweetalert2';
-
+declare function init_plugins();
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
               public usuarioService: UsuarioService) { }
 
   ngOnInit() {
+    init_plugins();
     this.username = localStorage.getItem('user') || '';
     if ( this.username.length > 0) // Si tengo algo en localStorage es por que ya se logueo y puso recordar
     {

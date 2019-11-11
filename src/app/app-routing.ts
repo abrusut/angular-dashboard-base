@@ -1,10 +1,9 @@
 import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component';
-import { RegisterComponent } from './components/login/register.component';
+import { RegisterComponent } from './components/register/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { LoginGuardGuard } from './services/guards/login-guard.guard';
 
@@ -14,7 +13,7 @@ const APP_ROUTES: Routes = [
   {
     path: '',
     component: PagesComponent,
-    // canActivate: [ LoginGuardGuard ],
+    canActivate: [ LoginGuardGuard ],
     loadChildren: './pages/pages.modulo#PageModule'
   },
   { path: '**', component: NopagefoundComponent}

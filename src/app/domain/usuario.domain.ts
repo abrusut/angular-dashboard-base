@@ -1,11 +1,9 @@
 export interface Usuario {
-  nombre?: string;
-  apellido?: string;
+  name?: string;
   email?: string;
-  password?: string;
   img?: string;
   role?: string;
-  google?: boolean;
   id?: string;
+  password?: string;
 
 }

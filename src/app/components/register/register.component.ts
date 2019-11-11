@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
 
@@ -72,8 +72,7 @@ export class RegisterComponent implements OnInit {
     console.log(this.forma.value);
 
     const usuario: Usuario = {};
-    usuario.nombre = this.forma.value.nombre;
-    usuario.apellido = this.forma.value.apellido;
+    usuario.name = this.forma.value.nombre + ` ` + this.forma.value.apellido;
     usuario.email = this.forma.value.correo;
     usuario.password = this.forma.value.password;
 

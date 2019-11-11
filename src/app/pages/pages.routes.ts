@@ -25,8 +25,8 @@ const PAGES_ROUTES: Routes = [
       { path: 'account-settings', component: AccountSettingComponent,
         data: { titulo: 'Ajustes de Tema' , description: 'Ajustes de Tema de la APP' }  },
       {
-        path: 'perfil', component: ProfileComponent,
-        data: { titulo: 'Perfil', description: 'Perfil del usuario de la APP' }
+        path: 'profile', component: ProfileComponent,
+        data: { titulo: 'Profile', description: 'Perfil del usuario de la APP' }
       },
       // Mantenimientos
       {
@@ -34,7 +34,7 @@ const PAGES_ROUTES: Routes = [
         component: UsuariosComponent,
         data: { titulo: 'Usuarios',
                 description: 'Mantenimiento de usuarios de la APP' },
-        // canActivate: [ AdminGuard ]
+        canActivate: [ AdminGuard ]
       },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full'}
   ];

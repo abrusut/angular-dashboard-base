@@ -59,8 +59,7 @@ export class UsuarioService {
   cargarStorage() {
     if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
-      // this.usuario = JSON.parse(localStorage.getItem('usuario'));
-      // this.menu = JSON.parse(localStorage.getItem('menu'));
+      this.usuario = JSON.parse(localStorage.getItem('usuario'));
     } else {
       this.token = ' ';
       this.usuario = null;
@@ -69,30 +68,16 @@ export class UsuarioService {
   }
 
   estaLogueado() {
-    return this.token && this.token.length > 5 ? true : false;
+    return this.usuario && this.token && this.token.length > 5 ? true : false;
   }
 
-  saveLocalStorage(id: string, token: string, usuario: Usuario, menu: any) {
-    // this.usuario = usuario;
+  saveLocalStorage(token: string, usuario: Usuario) {
+    this.usuario = usuario;
     this.token = token;
     // this.menu = menu;
-    // localStorage.setItem('id', id);
-    // localStorage.setItem('token', token);
-    // localStorage.setItem('usuario', JSON.stringify(usuario));
-    // localStorage.setItem('menu', JSON.stringify(menu));
-  }
-
-  loginGoogle(token: string) {
-    const url: string = URL_SERVICIOS + '/login/google';
-
-    return this.http.post(url, { token })
-      .pipe(
-        map((resp: any) => {
-            this.saveLocalStorage(resp.id, resp.token, resp.usuario, resp.menu);
-            console.log(resp);
-            return true;
-          }
-        ));
+    localStorage.setItem('id', usuario.id);
+    localStorage.setItem('token', token);
+    localStorage.setItem('usuario', JSON.stringify(usuario));
   }
 
   logout() {
@@ -101,7 +86,6 @@ export class UsuarioService {
     this.menu = [];
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
-    localStorage.removeItem('menu');
     this.router.navigate(['/login']);
   }
 
@@ -116,7 +100,9 @@ export class UsuarioService {
 
     return this.http.post(url, usuario).pipe(
       map((data: any) => {
-        this.saveLocalStorage(data.id, data.token, data.usuario, data.menu);
+        const user: Usuario = data.user;
+
+        this.saveLocalStorage(data.token, user);
         console.log(data);
         return true;
         console.log('entra ' + data);
@@ -174,10 +160,8 @@ export class UsuarioService {
             // SI el usuario es el mismo logueado actualizo las variables de storage
             const usuarioDB: Usuario = usuario; // La respuesta del backend me devuelve el usuario actualizado
             this.saveLocalStorage(
-              usuarioDB.id,
               this.token,
-              usuarioDB,
-              this.menu
+              usuarioDB
             );
           }
           return resp;
@@ -197,7 +181,7 @@ export class UsuarioService {
           // actualizo la imagen del usuario logueado
           this.usuario.img = resp.usuario.img;
           // Actualizo datos del usuario en storage (para que se vean los cambios en front)
-          this.saveLocalStorage(id, this.token, this.usuario, this.menu);
+          this.saveLocalStorage(this.token, this.usuario);
           console.log(resp);
           resolve(resp);
         })

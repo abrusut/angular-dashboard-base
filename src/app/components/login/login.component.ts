@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { UsuarioService } from '../../services/service.index';
+import { UsuarioService, CommonService } from '../../services/service.index';
 import { Usuario } from '../../domain/usuario.domain';
 import { UserLogin } from '../../domain/userLogin.domain';
 
 import Swal from 'sweetalert2';
+import { Exception } from 'src/app/domain/exception.domain';
 declare function init_plugins();
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   auth2: any;
   error: any = null;
 
-  constructor(public router: Router,
+  constructor(public router: Router, public commonService: CommonService,
               public usuarioService: UsuarioService) { }
 
   ngOnInit() {
@@ -50,10 +51,9 @@ export class LoginComponent implements OnInit {
 
       },
         error => {
-          this.error = error.error;
-          Swal.fire('Error en el Login', this.error.message, 'error');
-          console.log(this.error.message);
-          console.log('ERRORRR' + error); // error path
+          const exception: Exception
+              =  this.commonService.handlerError(error);
+          Swal.fire(exception.title, exception.statusCode + ' ' + exception.body, 'error');
         }
       );
   }

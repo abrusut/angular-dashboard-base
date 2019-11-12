@@ -11,13 +11,14 @@ export class CommonService {
 
   handlerError(err: any): Exception {
     let exception: Exception = {};
-    exception.body = 'Error procesando la peticion';
+    exception.body = 'Error procesando la peticion <br/>';
     exception.title = 'Error en la aplicacion';
     exception.icon = 'error';
 
     if ( err && err !== undefined ) {
       if (err instanceof HttpErrorResponse) {
         exception.statusCode = err.status;
+        exception.title = `Error ${exception.statusCode} en la aplicacion `;
         console.error(`${err.status} - ${err.statusText} - ${err.url}` );
       }
       if (err.error !== undefined && err.error.violations !== undefined && err.error.violations.length>0) {
@@ -25,7 +26,9 @@ export class CommonService {
         err.error.violations.forEach(violation => {
           exception.body += ` ${violation.message} ` ;
         });
-
+      }
+      if (err.error !== undefined) {
+        exception.body += ` ${err.error.code} - ${err.error.message}`;
       }
 
     }

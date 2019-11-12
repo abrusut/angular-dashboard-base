@@ -104,12 +104,7 @@ export class UsuarioService {
     return this.http.post(url, usuario).pipe(
       map((data: any) => {
         const user: Usuario = data.user;
-
         this.saveLocalStorage(data.token, user);
-        console.log(data);
-        return true;
-        console.log('entra ' + data);
-        localStorage.setItem('token', data.token);
       }),
       catchError((error: HttpErrorResponse) => this.handleError(error))
     );

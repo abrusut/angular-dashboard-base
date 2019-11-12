@@ -3,7 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  URL_API : 'http://localhost:83/symfony4_jwt_base/public/index.php/api',
+  ROLE_SUPER_ADMIN : 'ROLE_SUPER_ADMIN',
+  ROLE_USER : 'ROLE_USER',
+  ROLE_VIEWER : 'ROLE_VIEWER',
+  ROLE_ADMIN : 'ROLE_ADMIN',
+  ATRIBUTE_MINISTERIO : 'MINISTERIO DE PRODUCCION',
+  ATRIBUTE_SISTEMA : 'Base Dashboard'
 };
 
 /*

@@ -1,5 +1,4 @@
 import { Usuario } from '../../domain/usuario.domain';
-import { URL_SERVICIOS } from '../../config/config';
 import { Observable, throwError } from 'rxjs';
 import { map, filter, catchError, mergeMap, mapTo } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -15,6 +14,9 @@ import { Injectable } from '@angular/core';
 
 import Swal from 'sweetalert2';
 import { UserLogin } from '../../domain/userLogin.domain';
+import { environment } from 'src/environments/environment';
+import { CommonService } from '../common/common.service';
+import { Exception } from 'src/app/domain/exception.domain';
 
 @Injectable()
 export class UsuarioService {
@@ -25,14 +27,15 @@ export class UsuarioService {
   constructor(
     public http: HttpClient,
     public router: Router,
-    public subirArchivoService: SubirArchivoService
+    public subirArchivoService: SubirArchivoService,
+    public commonService: CommonService
   ) {
     // console.log("Servicio de usuarios");
     this.cargarStorage();
   }
 
   renuevaToken() {
-    let url: string = URL_SERVICIOS + '/login/renuevatoken';
+    let url: string = environment.URL_API + '/login/renuevatoken';
     url += '?token=' + this.token;
     return this.http
       .get(url)
@@ -44,7 +47,7 @@ export class UsuarioService {
           return true;
         } ),
         catchError( (error: HttpErrorResponse) => {
-          console.log(error);
+          this.commonService.handlerError(error);
           this.router.navigate(['/login']);
           Swal.fire(
             'No se pudo renovar token',
@@ -96,7 +99,7 @@ export class UsuarioService {
       localStorage.removeItem('username');
     }
 
-    const url: string = URL_SERVICIOS + '/login_check';
+    const url: string = environment.URL_API + '/login_check';
 
     return this.http.post(url, usuario).pipe(
       map((data: any) => {
@@ -136,7 +139,7 @@ export class UsuarioService {
   }
 
   crearUsuario(usuario: Usuario) {
-    const url: string = URL_SERVICIOS + '/usuario';
+    const url: string = environment.URL_API + '/usuario';
 
     return this.http
       .post(url, usuario)
@@ -149,8 +152,8 @@ export class UsuarioService {
   }
 
   actualizarUsuario(usuario: Usuario) {
-    let url: string = URL_SERVICIOS + '/usuario/' + usuario.id;
-    url += '?token=' + this.token;
+    let url: string = environment.URL_API + '/users/' + usuario.id;
+    // url += '?token=' + this.token;
 
     return this.http
       .put(url, usuario)
@@ -167,7 +170,9 @@ export class UsuarioService {
           return resp;
         }),
         catchError(error => {
-          Swal.fire(error.error.mensaje, error.error.errors.message, 'error');
+          let exception: Exception
+              =  this.commonService.handlerError(error);
+          Swal.fire(exception.title, exception.statusCode + ' ' + exception.body, 'error');
           return throwError(error);
         })
       );
@@ -193,17 +198,17 @@ export class UsuarioService {
   }
 
   findAllUsuarios(desde: number = 0) {
-    const url = URL_SERVICIOS + '/usuario?desde=' + desde;
+    const url = environment.URL_API + '/users?desde=' + desde;
     return this.http.get(url);
   }
 
   findUsuarios(termino: string) {
-    const url = URL_SERVICIOS + '/busqueda/colleccion/usuarios/' + termino;
+    const url = environment.URL_API + '/busqueda/colleccion/usuarios/' + termino;
     return this.http.get(url);
   }
 
   borrarUsuario(id: string) {
-    let url = URL_SERVICIOS + '/usuario/' + id;
+    let url = environment.URL_API + '/users/' + id;
     url += '?token=' + this.token;
 
     return this.http.delete(url);

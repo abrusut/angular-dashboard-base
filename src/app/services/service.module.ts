@@ -10,7 +10,8 @@ import {SettingsService,
         LoginGuardGuard,
         VerificaTokenGuard,
         SubirArchivoService,
-        ModalUploadService
+        ModalUploadService,
+        CommonService
 } from './service.index';
 
 
@@ -29,7 +30,8 @@ import {SettingsService,
     AdminGuard,
     VerificaTokenGuard,
     SubirArchivoService,
-    ModalUploadService
+    ModalUploadService,
+    CommonService
   ]
 })
 export class ServiceModule { }

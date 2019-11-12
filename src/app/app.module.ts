@@ -5,7 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Interceptor HTTP
-import { TokenInterceptor } from './services/auth/token.interceptor';
+import { MyHttpInterceptor } from './my-http-interceptor';
 
 // Rutas
 import { APP_ROUTING } from './app-routing';
@@ -21,6 +21,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.modulo';
+
 
 
 @NgModule({
@@ -43,7 +44,13 @@ import { SharedModule } from './shared/shared.modulo';
   exports: [
     SweetAlert2Module
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MyHttpInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

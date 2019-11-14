@@ -147,8 +147,7 @@ export class UsuarioService {
   }
 
   actualizarUsuario(usuario: Usuario) {
-    let url: string = environment.URL_API + '/users/' + usuario.id;
-    // url += '?token=' + this.token;
+    const url: string = environment.URL_API + '/users/' + usuario.id;
 
     return this.http
       .put(url, usuario)
@@ -162,10 +161,37 @@ export class UsuarioService {
               usuarioDB
             );
           }
-          return resp;
+          return true;
         }),
         catchError(error => {
-          let exception: Exception
+          const exception: Exception
+              =  this.commonService.handlerError(error);
+          Swal.fire(exception.title, exception.statusCode + ' ' + exception.body, 'error');
+          return throwError(error);
+        })
+      );
+  }
+
+  actualizarPasswordUsuario(usuario: Usuario) {
+    const url: string = environment.URL_API + '/users/' + this.usuario.id + '/reset-password';
+
+    return this.http
+      .put(url, usuario)
+      .pipe(
+        map((resp: any) => {
+          if (usuario.id === this.usuario.id && resp.token !== undefined) {
+            this.token = resp.token;
+            // SI el usuario es el mismo logueado actualizo las variables de storage
+            const usuarioDB: Usuario = usuario; // La respuesta del backend me devuelve el usuario actualizado
+            this.saveLocalStorage(
+              this.token,
+              usuarioDB
+            );
+          }
+          return true;
+        }),
+        catchError(error => {
+          const exception: Exception
               =  this.commonService.handlerError(error);
           Swal.fire(exception.title, exception.statusCode + ' ' + exception.body, 'error');
           return throwError(error);

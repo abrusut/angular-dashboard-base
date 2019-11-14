@@ -17,9 +17,9 @@
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
                 </div>
-                <form  #forma="ngForm" (ngSubmit)="ingresar(forma)" >
+                <form  ngNativeValidate #forma="ngForm" (ngSubmit)="ingresar(forma)" >
                   <div class="form-group">
-                      <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Correo del Usuario / Username">
+                      <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Usuario">
                   </div>
                   <div class="form-group">
                       <input ngModel name="password" class="form-control" type="password" required placeholder="Password">

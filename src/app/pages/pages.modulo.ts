@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 // Rutas
@@ -8,6 +8,7 @@ import { PAGES_ROUTING } from './pages.routes';
 // Modulos
 import { SharedModule } from '../shared/shared.modulo';
 import { PipesModule } from '../pipes/pipes.module';
+
 
 // Componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -28,6 +29,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     ],
     imports: [
         FormsModule,
+        ReactiveFormsModule,
         CommonModule,
         SharedModule,
         PipesModule,

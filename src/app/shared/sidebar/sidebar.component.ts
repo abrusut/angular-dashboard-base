@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SidebarService, UsuarioService  } from '../../services/service.index';
 import {Usuario} from '../../domain/usuario.domain';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,10 +10,12 @@ import {Usuario} from '../../domain/usuario.domain';
 })
 export class SidebarComponent implements OnInit {
 
-  usuario: Usuario;
-
   constructor(public sidebarService: SidebarService,
               public usuarioService: UsuarioService) { }
+
+  ATRIBUTE_MINISTERIO = environment.ATRIBUTE_MINISTERIO;
+
+  usuario: Usuario;
 
   ngOnInit() {
     this.usuario = this.usuarioService.usuario;

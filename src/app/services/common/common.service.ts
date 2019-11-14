@@ -14,7 +14,7 @@ export class CommonService {
     exception.body = 'Error procesando la peticion <br/>';
     exception.title = 'Error en la aplicacion';
     exception.icon = 'error';
-
+    console.log(err);
     if ( err && err !== undefined ) {
       if (err instanceof HttpErrorResponse) {
         exception.statusCode = err.status;
@@ -27,7 +27,7 @@ export class CommonService {
           exception.body += ` ${violation.message} ` ;
         });
       }
-      if (err.error !== undefined) {
+      if (err.error !== undefined && err.error.code!==undefined && err.error.message !== undefined ) {
         exception.body += ` ${err.error.code} - ${err.error.message}`;
       }
 

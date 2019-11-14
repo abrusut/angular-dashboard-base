@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -9,7 +10,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./nopagefound.css']
 })
 export class NopagefoundComponent implements OnInit {
-
+  ATRIBUTE_MINISTERIO = environment.ATRIBUTE_MINISTERIO;
   anio: number = new Date().getFullYear();
   constructor(private location: Location) { }
 

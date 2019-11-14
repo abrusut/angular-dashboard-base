@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from '../../domain/usuario.domain';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import Swal from 'sweetalert2';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -13,11 +14,60 @@ export class ProfileComponent implements OnInit {
   usuario: Usuario;
   archivoASubir: File;
   imagenTemp: any;
+  forma: FormGroup;
 
   constructor(public usuarioService: UsuarioService) { }
 
   ngOnInit() {
     this.usuario = this.usuarioService.usuario; // Usuario Logueado
+
+    this.forma = new FormGroup({
+      oldPassword: new FormControl(null, Validators.required),
+      newPassword: new FormControl(null, Validators.required),
+      newRetypedPassword: new FormControl(null, Validators.required)
+    }, { validators: this.sonIguales( 'newPassword', 'newRetypedPassword' ) });
+  }
+
+  sonIguales( campo1: string, campo2: string ) {
+
+    return (group: FormGroup) => {
+      const pass1 = group.controls[campo1].value;
+      const pass2 = group.controls[campo2].value;
+
+      if ( pass1 === pass2 ) {
+        return null;
+      }
+
+      return {
+        sonIguales: true
+      };
+    };
+  }
+
+ // ==================================
+  // Actualizacion Password
+  // ==================================
+  cambiarClaveUsuario() {
+    if ( this.forma.invalid ) {
+      Swal.fire('Importante', 'Debe completar todo el formulario', 'warning');
+      return;
+    }
+
+    console.log('Forma Valida', this.forma.valid);
+    console.log(this.forma.value);
+
+    const usuarioCambioPassword: Usuario = {};
+    usuarioCambioPassword.id = this.usuario.id;
+    usuarioCambioPassword.newPassword = this.forma.value.newPassword;
+    usuarioCambioPassword.newRetypedPassword = this.forma.value.newRetypedPassword;
+    usuarioCambioPassword.oldPassword = this.forma.value.oldPassword;
+    this.usuarioService.actualizarPasswordUsuario(usuarioCambioPassword)
+      .subscribe( ( resp: any ) => {
+        if ( resp ) {
+          Swal.fire('Password Actualizada', this.usuario.name, 'success');
+        }
+      });
+
   }
 
   // ==================================
@@ -31,7 +81,7 @@ export class ProfileComponent implements OnInit {
 
     this.usuarioService.actualizarUsuario(this.usuario)
       .subscribe( ( resp: any ) => {
-        if ( resp.ok ) {
+        if ( resp ) {
           Swal.fire('Usuario Actualizado', usuario.name, 'success');
         }
       });

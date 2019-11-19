@@ -205,7 +205,7 @@ export class UsuarioService {
         .subirArchivo(file, 'usuarios', id)
         .then((resp: any) => {
           // actualizo la imagen del usuario logueado
-          this.usuario.img = resp.usuario.img;
+          this.usuario.avatar = resp.usuario.avatar;
           // Actualizo datos del usuario en storage (para que se vean los cambios en front)
           this.saveLocalStorage(this.token, this.usuario);
           console.log(resp);

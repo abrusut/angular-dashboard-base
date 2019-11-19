@@ -2,7 +2,7 @@ export interface Usuario {
   username?: string;
   name?: string;
   email?: string;
-  img?: string;
+  avatar?: string;
   role?: string;
   id?: string;
   password?: string;

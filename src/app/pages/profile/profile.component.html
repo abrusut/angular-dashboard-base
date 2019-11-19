@@ -41,7 +41,7 @@
 
         <img *ngIf="imagenTemp" [src]="imagenTemp" class="img-thumbnail rounded mx-auto d-block" />
 
-        <img *ngIf="!imagenTemp" [src]="usuario.img | imagen" class="img-thumbnail rounded mx-auto d-block" />
+        <img *ngIf="!imagenTemp" [src]="usuario.avatar | imagen" class="img-thumbnail rounded mx-auto d-block" />
 
         <input type="file" class="mt-2" (change)="seleccionImagen( $event.target.files[0] )">
 

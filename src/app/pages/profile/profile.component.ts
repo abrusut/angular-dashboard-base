@@ -3,7 +3,7 @@ import { Usuario } from '../../domain/usuario.domain';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import Swal from 'sweetalert2';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
+declare function init_plugins();
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -19,6 +19,7 @@ export class ProfileComponent implements OnInit {
   constructor(public usuarioService: UsuarioService) { }
 
   ngOnInit() {
+    init_plugins();
     this.usuario = this.usuarioService.usuario; // Usuario Logueado
 
     this.forma = new FormGroup({

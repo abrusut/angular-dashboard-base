@@ -9,7 +9,7 @@ export class ImagenPipe implements PipeTransform {
 
   transform(img: string, tipo: string = 'usuario'): any {
 
-    let url = environment.URL_API + '/imagenes';
+    let url = environment.URL_API + '/images';
 
     if ( !img ) {
       return url + '/usuarios/xxx'; // No imagen

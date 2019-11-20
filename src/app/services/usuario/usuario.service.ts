@@ -199,13 +199,13 @@ export class UsuarioService {
       );
   }
 
-  cambiarImagen(file: File, id: string) {
+  uploadImagen(file: File, id: string) {
     return new Promise((resolve, reject) => {
       this.subirArchivoService
         .subirArchivo(file, 'usuarios', id)
         .then((resp: any) => {
           // actualizo la imagen del usuario logueado
-          this.usuario.avatar = resp.usuario.avatar;
+          this.usuario.avatar = resp.url;
           // Actualizo datos del usuario en storage (para que se vean los cambios en front)
           this.saveLocalStorage(this.token, this.usuario);
           console.log(resp);

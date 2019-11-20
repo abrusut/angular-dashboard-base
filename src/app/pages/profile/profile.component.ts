@@ -118,9 +118,9 @@ export class ProfileComponent implements OnInit {
   }
 
   subirArchivo() {
-    this.usuarioService.cambiarImagen(this.archivoASubir, this.usuario.id)
+    this.usuarioService.uploadImagen(this.archivoASubir, this.usuario.id)
       .then( (resp: any) => {
-        if (resp.ok) {
+        if (resp.id !== undefined && resp.id > 0) {
           Swal.fire('Usuario Actualizado', this.usuario.name, 'success');
         }
 

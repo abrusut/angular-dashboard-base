@@ -13,11 +13,11 @@ export class SubirArchivoService {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
 
-      formData.append('imagen', archivo, archivo.name);
+      formData.append('file', archivo, archivo.name);
 
       xhr.onreadystatechange = function() {
         if ( xhr.readyState === 4 ) {
-          if ( xhr.status === 200 ) {
+          if ( xhr.status === 201 ) {
             console.log('Archivo Subido');
             resolve( JSON.parse(xhr.response) );
           } else {
@@ -28,7 +28,8 @@ export class SubirArchivoService {
       };
 
       const url = environment.URL_API + '/images/' + tipo + '/' + id;
-      xhr.open('PUT', url, true);
+
+      xhr.open('POST', url, true);
       xhr.send(formData);
 
     });

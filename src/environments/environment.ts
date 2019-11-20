@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   URL_API : 'http://localhost:83/symfony4_jwt_base/public/index.php/api',
+  URL_RESOURCES : 'http://localhost:83/symfony4_jwt_base/public',
   ROLE_SUPER_ADMIN : 'ROLE_SUPER_ADMIN',
   ROLE_USER : 'ROLE_USER',
   ROLE_VIEWER : 'ROLE_VIEWER',

@@ -11,7 +11,10 @@ export const environment = {
   ROLE_VIEWER : 'ROLE_VIEWER',
   ROLE_ADMIN : 'ROLE_ADMIN',
   ATRIBUTE_MINISTERIO : 'MINISTERIO DE PRODUCCION',
-  ATRIBUTE_SISTEMA : 'Base Dashboard'
+  ATRIBUTE_SISTEMA_NAME : 'Base Dashboard',
+  AUTOR_NAME: 'Andres Brusutti',
+  KEYWORDS: 'Ministerio Produccion, Santa Fe'
+
 };
 
 /*

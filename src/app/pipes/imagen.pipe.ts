@@ -12,7 +12,7 @@ export class ImagenPipe implements PipeTransform {
     let url = environment.URL_RESOURCES;
 
     if ( !img ) {
-      return url + '/usuarios/xxx'; // No imagen
+      return url + '/images/empty.png'; // No imagen
     }
 
     if ( img.indexOf('https') >= 0 ) {

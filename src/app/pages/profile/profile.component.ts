@@ -4,6 +4,7 @@ import { UsuarioService } from '../../services/usuario/usuario.service';
 import Swal from 'sweetalert2';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 declare function init_plugins();
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',

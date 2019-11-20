@@ -15,11 +15,11 @@ export class VerificaTokenGuard implements CanActivate {
     console.log('Inicio de verifica token guard');
     const token = this.usuarioService.token;
     const payload = JSON.parse(atob( token.split('.')[1]));
-    console.log(payload);
+    console.log(` payload token: ${payload}` );
 
     const expirado = this.expirado(payload.exp);
     if (expirado) {
-      return false;
+      return   this.router.navigate(['/login']);
     }
 
     return this.verificaRenueva(payload.exp);
@@ -41,7 +41,8 @@ export class VerificaTokenGuard implements CanActivate {
       const tokenExp = new Date( fechaExpToken * 1000);
       const ahora = new Date();
       ahora.setTime( ahora.getTime() + (4 * 60 * 60) ); // Incrementa 4hs
-      console.log(tokenExp);
+      console.log ( `token expire ${tokenExp}` );
+      console.log ( `ahora es: ${ahora} ` );
       console.log(ahora);
 
       if (tokenExp.getTime() > ahora.getTime()) {// el token no esta proximo a vencer devuelvo true

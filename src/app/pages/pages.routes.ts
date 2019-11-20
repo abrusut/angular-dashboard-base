@@ -2,7 +2,6 @@ import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AccountSettingComponent } from './account-setting/account-setting.component';
 import {LoginGuardGuard} from '../services/guards/login-guard.guard';
 import {AdminGuard} from '../services/guards/admin.guard';
 import {ProfileComponent} from './profile/profile.component';
@@ -20,11 +19,10 @@ const PAGES_ROUTES: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         data: { titulo: 'Dashboard', description: 'Dashboard de la APP' },
-       // canActivate: [ VerificaTokenGuard ]
+        canActivate: [ VerificaTokenGuard ]
       },
-      { path: 'account-settings', component: AccountSettingComponent,
-        data: { titulo: 'Ajustes de Tema' , description: 'Ajustes de Tema de la APP' }  },
       {
+        // Profile del usuario logueado. Reset Password
         path: 'profile', component: ProfileComponent,
         data: { titulo: 'Profile', description: 'Perfil del usuario de la APP' }
       },

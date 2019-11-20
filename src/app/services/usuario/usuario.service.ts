@@ -88,6 +88,7 @@ export class UsuarioService {
     this.token = null;
     this.menu = [];
     localStorage.removeItem('token');
+    localStorage.removeItem('id');
     localStorage.removeItem('usuario');
     this.router.navigate(['/login']);
   }

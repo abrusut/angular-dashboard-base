@@ -12,7 +12,6 @@ import { PipesModule } from '../pipes/pipes.module';
 
 // Componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { AccountSettingComponent } from './account-setting/account-setting.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -20,7 +19,6 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 @NgModule({
     declarations: [
         DashboardComponent,
-        AccountSettingComponent,
         ProfileComponent,
         UsuariosComponent
     ],

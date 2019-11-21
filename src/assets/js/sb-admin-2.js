@@ -1,4 +1,5 @@
 function init_plugins() {
+  bootstrap_show_password();
 (function($) {
   "use strict"; // Start of use strict
 

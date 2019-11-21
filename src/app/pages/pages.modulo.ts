@@ -7,14 +7,14 @@ import { PAGES_ROUTING } from './pages.routes';
 
 // Modulos
 import { SharedModule } from '../shared/shared.modulo';
-import { PipesModule } from '../pipes/pipes.module';
-
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { CommonsAppModule } from '../commons/commons.app.module';
 
 // Componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+
 
 @NgModule({
     declarations: [
@@ -30,9 +30,9 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
         ReactiveFormsModule,
         CommonModule,
         SharedModule,
-        PipesModule,
         PAGES_ROUTING,
-        SweetAlert2Module
+        SweetAlert2Module,
+        CommonsAppModule // Modulos basicos (RouterModule,FormsModule,ReactiveFormsModule,HttpClientModule,etc)
     ]
 })
 export class PageModule { }

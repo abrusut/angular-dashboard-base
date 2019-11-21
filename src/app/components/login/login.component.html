@@ -16,13 +16,20 @@
               <div class="p-5">
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Bienvenido!</h1>
+
+                  <p class="mb-4">{{ATRIBUTE_SISTEMA_NAME}} -
+                      {{ATRIBUTE_MINISTERIO |titlecase}}
+                  </p>
+
+
                 </div>
                 <form  ngNativeValidate #forma="ngForm" (ngSubmit)="ingresar(forma)" >
                   <div class="form-group">
                       <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Usuario">
                   </div>
                   <div class="form-group">
-                      <input ngModel name="password" class="form-control" type="password" required placeholder="Password">
+                      <input ngModel data-toggle="password" name="password" class="form-control" type="password"
+                      required placeholder="Password">
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox small">

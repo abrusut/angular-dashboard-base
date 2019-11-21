@@ -3,11 +3,14 @@ export interface Usuario {
   name?: string;
   email?: string;
   avatar?: string;
-  role?: string;
+  roles?: Array<string>;
   id?: string;
   password?: string;
   newPassword?: string;
   newRetypedPassword?: string;
   oldPassword?: string;
+  confirmationToken?: string;
+  enabled?: boolean;
+  passwordChangeDate?: Date;
 
 }

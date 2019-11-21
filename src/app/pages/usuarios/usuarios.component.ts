@@ -1,24 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import {Usuario} from '../../domain/usuario.domain';
-import {UsuarioService} from '../../services/usuario/usuario.service';
-import {ModalUploadService} from '../../components/modal-upload/modal-upload.service';
-
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Observable, fromEvent } from 'rxjs';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
+import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
+import { Usuario } from '../../domain/usuario.domain';
+import { UsuarioService } from '../../services/usuario/usuario.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SelectItem, LazyLoadEvent } from 'primeng/api';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styles: []
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('filterNombreOrDniInput', {static: false}) filterNombreOrDniInput: ElementRef;
+  public inputObservable: Observable<string>;
+
+  selectedItem: Usuario;
+  filterNombreOrDni: string;
+  totalRecords: number;
+  nroFilasPorPagina: number = environment.REGISTROS_PER_PAGE;
+  paginaActual = 0;
+
+  loading = false;
   usuarios: Usuario[] = [];
-  desde = 0;
-  totalRegistros = 0;
-  cargando = true;
+  cols: any[];
+  yearTimeout: any;
 
   constructor(public usuarioService: UsuarioService,
-              public modalUploadService: ModalUploadService) { }
+              private route: ActivatedRoute,
+              private router: Router,
+              public modalUploadService: ModalUploadService) {
+                this.cols = [
+                  { field: 'username', header: 'User' },
+                  { field: 'name', header: 'Nombre' },
+                  { field: 'email', header: 'Email' },
+                  { field: 'enabled', header: 'Activo' },
+                  { field: 'confirmationToken', header: 'Confirmation Token' },
+                  { field: 'roles', header: 'Roles' },
+                  { field: 'passwordChangeDate', header: 'Cambio Password' },
+                  { field: 'accion', header: 'Acciones' }
+                ];
+              }
 
   ngOnInit() {
     this.cargarUsuarios();
@@ -28,33 +54,48 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit() {
+    this.inputObservable = fromEvent(this.filterNombreOrDniInput.nativeElement, 'input');
+    this.inputObservable.pipe(
+         debounceTime(1000))
+         .subscribe(value => {
+           console.log( `carga usuarios: ${value}`);
+           this.cargarUsuarios();
+          });
+  }
+
+
   mostrarModal(id: string) {
     this.modalUploadService.mostrarModal('usuarios', id);
   }
 
-  cargarUsuarios() {
-    this.cargando = true;
-    this.usuarioService.findAllUsuarios(this.desde)
-      .subscribe( (resp: any) => {
-
-        this.usuarios = resp.usuarios;
-        this.totalRegistros = resp.total;
-        this.cargando = false;
-        console.log(resp);
-      });
+  editarUsuario(id: string) {
+    console.log(` Editar Usuario ${id}`);
+    this.router.navigate([`pacientes/pacienteabm/${id}`]);
   }
 
-  cambiarDesde(valor: number) {
-    const desde = this.desde + valor;
-    if ( desde > this.totalRegistros ) {
-      return;
-    }
-    if ( desde < 0 ) {
-      return;
-    }
-
-    this.desde += valor;
+  loadUsuariosLazy(event: LazyLoadEvent) {
+    // in a real application, make a remote request to load data using state metadata from event
+    // event.first = First row offset
+    // event.rows = Number of rows per page
+    // event.sortField = Field name to sort with
+    // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
+    // filters: FilterMetadata object having field as key and filter value, filter matchMode as value
+    this.paginaActual = event.first;
     this.cargarUsuarios();
+  }
+
+  cargarUsuarios() {
+    this.loading = true;
+    this.usuarioService.findAllUsuarios(
+      this.paginaActual, this.nroFilasPorPagina, this.filterNombreOrDni)
+      .subscribe( (resp: any) => {
+        this.loading = false;
+        this.usuarios = resp.usuarios;
+        this.totalRecords = resp.total;
+
+        console.log(resp);
+      });
   }
 
   buscar(termino: string) {
@@ -64,13 +105,13 @@ export class UsuariosComponent implements OnInit {
       this.cargarUsuarios();
     }
 
-    this.cargando = true;
+    this.loading = true;
     this.usuarioService.findUsuarios(termino)
       .subscribe( (resp: any) => {
-
+        this.loading = false;
+        this.totalRecords =  resp.totalElements;
         this.usuarios = resp.usuarios;
-        this.totalRegistros = resp.usuarios.length;
-        this.cargando = false;
+
         console.log(resp);
       });
   }
@@ -102,12 +143,5 @@ export class UsuariosComponent implements OnInit {
     });
   }
 
-  guardar( usuario: Usuario ) {
-    this.usuarioService.actualizarUsuario(usuario)
-      .subscribe( (resp: any) => {
-        Swal.fire('Usuario Actualizado', usuario.name, 'success');
-        console.log(resp);
-      });
 
-  }
 }

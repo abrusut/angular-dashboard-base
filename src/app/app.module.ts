@@ -14,6 +14,8 @@ import { APP_ROUTING } from './app-routing';
 import { PageModule } from './pages/pages.modulo';
 import { ServiceModule } from './services/service.module';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { CommonsAppModule } from './commons/commons.app.module';
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -21,6 +23,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.modulo';
+
 
 
 
@@ -39,7 +42,9 @@ import { SharedModule } from './shared/shared.modulo';
     CommonModule,
     ServiceModule,
     SharedModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    BrowserAnimationsModule,
+    CommonsAppModule, // Modulos basicos (RouterModule,FormsModule,ReactiveFormsModule,HttpClientModule,etc)
   ],
   exports: [
     SweetAlert2Module

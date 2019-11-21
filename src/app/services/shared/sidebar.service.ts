@@ -22,23 +22,17 @@ export class SidebarService {
     this.menu = [
       {
         titulo: 'Principal',
-        icono: 'mdi mdi-gauge',
+        icono: 'fas fa-fw fa-folder',
         submenu: [
           { titulo: 'Dashboard', url: '/dashboard'  },
-          { titulo: 'Progress', url: '/progress'  },
-          { titulo: 'Graficos', url: '/graficas1'  },
-          { titulo: 'Promesas', url: '/promesas'  },
-          { titulo: 'rxjs', url: '/rxjs'  }
+          { titulo: 'Profile', url: '/profile'  }
         ]
       },
       {
         titulo: 'Mantenimientos',
-        icono: 'mdi mdi-folder-lock-open',
+        icono: 'fas fa-fw fa-folder',
         submenu: [
-          { titulo: 'Usuarios', url: '/usuarios'  },
-          { titulo: 'Hospitales', url: '/hospitales' },
-          { titulo: 'Medicos', url: '/medicos'  }
-
+          { titulo: 'Usuarios', url: '/usuarios'  }
         ]
       }
     ];

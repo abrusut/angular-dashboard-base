@@ -104,7 +104,7 @@ export class UsuarioService {
 
     return this.http.post(url, usuario).pipe(
       map((data: any) => {
-        const user: Usuario = data.user;
+        const user: Usuario = data.user as Usuario;
         this.saveLocalStorage(data.token, user);
       }),
       catchError((error: HttpErrorResponse) => this.handleError(error))
@@ -219,8 +219,8 @@ export class UsuarioService {
     });
   }
 
-  findAllUsuarios(desde: number = 0) {
-    const url = environment.URL_API + '/users?desde=' + desde;
+  findAllUsuarios(page:number ,size:number,filterNombreOrDni:string) {
+    const url = environment.URL_API + '/users?desde=' + page;
     return this.http.get(url);
   }
 

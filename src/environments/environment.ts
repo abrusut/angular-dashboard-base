@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  REGISTROS_PER_PAGE : 20,
   URL_API : 'http://localhost:83/symfony4_jwt_base/public/index.php/api',
   URL_RESOURCES : 'http://localhost:83/symfony4_jwt_base/public',
   ROLE_SUPER_ADMIN : 'ROLE_SUPER_ADMIN',

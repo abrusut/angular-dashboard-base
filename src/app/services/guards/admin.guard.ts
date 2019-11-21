@@ -3,17 +3,20 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Observable } from 'rxjs/Observable';
 import {UsuarioService} from '../usuario/usuario.service';
 import { environment } from 'src/environments/environment';
+import { CommonService } from '../common/common.service';
+import { SecurityService } from './security.service';
 
 
 @Injectable()
 export class AdminGuard implements CanActivate {
 
-  constructor(public usuarioService: UsuarioService, public router: Router) {
+  constructor(public usuarioService: UsuarioService, public router: Router,
+              public securityService: SecurityService) {
 
   }
 
   canActivate() {
-    if ( this.usuarioService.usuario.role === environment.ROLE_SUPER_ADMIN ) {
+    if ( this.securityService.hasRole('ROLE_SUPER_ADMIN') ) {
       return true;
     } else {
       console.log('Bloqueado por AdminGuard');

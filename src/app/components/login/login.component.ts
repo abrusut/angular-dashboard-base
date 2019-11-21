@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { UsuarioService, CommonService } from '../../services/service.index';
 import { Usuario } from '../../domain/usuario.domain';
 import { UserLogin } from '../../domain/userLogin.domain';
+import { environment } from '../../../environments/environment';
 
 import Swal from 'sweetalert2';
 import { Exception } from 'src/app/domain/exception.domain';
@@ -14,6 +15,9 @@ declare function init_plugins();
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  ATRIBUTE_MINISTERIO = environment.ATRIBUTE_MINISTERIO;
+  ATRIBUTE_SISTEMA_NAME = environment.ATRIBUTE_SISTEMA_NAME;
 
   username: string = '';
   userLogin: UserLogin = {};

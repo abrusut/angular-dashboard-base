@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 import { Exception } from '../../domain/exception.domain';
 import { HttpErrorResponse } from '@angular/common/http';
 import { element } from 'protractor';
+import { environment } from 'src/environments/environment';
+import { UsuarioService } from '../usuario/usuario.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,20 +14,21 @@ export class CommonService {
 
   handlerError(err: any): Exception {
     let exception: Exception = {};
-    exception.body = 'Error procesando la peticion <br/>';
-    exception.title = 'Error en la aplicacion';
+    exception.body = '';
+    let commonsExceptionBody = 'Error procesando la peticion <br/>';
+    let commonsExceptionTitle = 'Error en la aplicacion';
     exception.icon = 'error';
     console.log(err);
     if ( err && err !== undefined ) {
       if (err instanceof HttpErrorResponse) {
         exception.statusCode = err.status;
-        exception.title = `Error ${exception.statusCode} en la aplicacion `;
-        console.error(`${err.status} - ${err.statusText} - ${err.url}` );
+        exception.title = `Mensaje de la aplicacion `;
+        console.error(`Mensaje de la aplicacion ${err.status} - ${err.statusText} - ${err.url}` );
       }
       if (err.error !== undefined && err.error.violations !== undefined && err.error.violations.length > 0) {
 
         err.error.violations.forEach(violation => {
-          exception.body += ` ${violation.message} ` ;
+          exception.body = ` ${violation.message} ` ;
         });
       }
       if (err.error !== undefined && err.error.code !== undefined && err.error.message !== undefined ) {
@@ -36,6 +39,15 @@ export class CommonService {
         }
       }
 
+    }
+
+    if ( exception.body === undefined || (exception.body !== undefined && exception.body.length === 0 ))
+    {
+      exception.body = commonsExceptionBody;
+    }
+    if ( exception.title === undefined || (exception.title !== undefined && exception.title.length === 0 ))
+    {
+      exception.title = commonsExceptionTitle;
     }
 
     return exception;
@@ -61,7 +73,7 @@ export class CommonService {
 
   checkWords(arr, val) {
     return arr.some(function(arrVal) {
-      return val === arrVal;
+      return val !== arrVal;
     });
   }
 

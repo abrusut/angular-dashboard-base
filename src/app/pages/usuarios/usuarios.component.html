@@ -2,7 +2,10 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input #buscador (keyup)="buscar(buscador.value)" type="text" class="form-control" placeholder="Buscar usuario">
+          <input #filterNombreOrDniInput type="text" pInputText size="50"
+          placeholder="'Apellido Nombre' o 'Documento'"
+          [(ngModel)]="filterNombreOrDni">
+        <button pButton type="button" icon="fa fa-close" (click)="filterNombreOrDni=null"></button>
       </div>
     </div>
   </div>
@@ -21,65 +24,51 @@
   </div>
 </div>
 
-<div class="row animated fadeIn"  *ngIf="!cargando">
+<div class="row animated fadeIn" *ngIf="!cargando">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
         <h3 class="card-title">
           Usuarios Registrados(
-          <small>{{totalRegistros}}</small>
+          <small>{{totalRecords}}</small>
           )
         </h3>
 
-        <table class="table table-hover">
-          <thead>
+        <p-table #dt [columns]="cols" [value]="usuarios" [lazy]="true" (onLazyLoad)="loadUsuariosLazy($event)"
+          [paginator]="true" [rows]="nroFilasPorPagina" [totalRecords]="totalRecords" [loading]="loading">
+
+          <ng-template pTemplate="header" let-columns>
             <tr>
-                <th>Imagen</th>
-                <th>Correo</th>
-                <th>Nombre</th>
-                <th>Role</th>
-                <th>Auth</th>
-                <th></th>
+              <th *ngFor="let col of columns" [className]="'header-'+col.field">
+                {{col.header}}
+              </th>
             </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let usuario of usuarios">
-            <td class="w70">
-              <img (click)="mostrarModal(usuario._id)" [src]="usuario.img | imagen" alt="user" class="img-responsive img-50 img-circle pointer" />
-            </td>
-            <td>
-              {{ usuario.email }}
-            </td>
-            <td>
-              {{ usuario.nombre }}
-            </td>
-            <td>
-              <select name="rol" class="form-control" [(ngModel)]="usuario.role">
-                <option value="ADMIN_ROLE">ADMIN_ROLE</option>
-                <option value="USER_ROLE">USER_ROLE</option>
-              </select>
-            </td>
-            <td>
-              <label *ngIf="usuario.google" class="label label-danger">Google</label>
-              <label *ngIf="!usuario.google" class="label label-primary">Normal</label>
-            </td>
-            <td>
-              <button class="btn btn-primary" (click)="guardar(usuario)">
-                <i class="fa fa-save"></i>
-              </button>
-              <button class="btn btn-danger" (click)="borrar(usuario)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        <button class="btn btn-secundary"  (click)="cambiarDesde(-5)">
-          Anteriores
-        </button>
-        <button class="btn btn-secundary"  (click)="cambiarDesde(5)">
-          Siguientes
-        </button>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-rowUsuario let-columns="columns">
+            <tr [pSelectableRow]="rowUsuario">
+              <td *ngFor="let col of columns" [ngSwitch]="col.field">
+                <div *ngSwitchCase="'username'">{{rowUsuario.username}}</div>
+                <div *ngSwitchCase="'name'">{{rowUsuario.name}}</div>
+                <div *ngSwitchCase="'email'">{{rowUsuario.email}}</div>
+                <div *ngSwitchCase="'enabled'">{{rowUsuario.enabled}}</div>
+                <div *ngSwitchCase="'confirmationToken'">{{rowUsuario.confirmationToken}}</div>
+                <div *ngSwitchCase="'accion'">
+                  <div class="ui-g-12  ui-g-nopad">
+                    <div class="ui-g-3  ui-g-nopad">
+                      <p-button icon="fa fa-edit" iconPos="left" ptooltip="Editar"
+                        (click)="editarUsuario(rowUsuario.id)"></p-button>
+                    </div>
+                    <div class="ui-g-3  ui-g-nopad">
+                      <p-button icon="fa fa-remove" iconPos="left"></p-button>
+                    </div>
+                  </div>
+                </div>
+                <div *ngSwitchDefault>{{rowUsuario[col.field]}}</div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
       </div>
     </div>
   </div>

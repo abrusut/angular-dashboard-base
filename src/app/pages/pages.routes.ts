@@ -34,6 +34,13 @@ const PAGES_ROUTES: Routes = [
                 description: 'Mantenimiento de usuarios de la APP' },
         canActivate: [ AdminGuard ]
       },
+      {
+        path: 'usuarios/register',
+        component: UsuariosComponent,
+        data: { titulo: 'Usuarios',
+                description: 'Mantenimiento de usuarios de la APP' },
+        canActivate: [ AdminGuard ]
+      },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full'}
   ];
 

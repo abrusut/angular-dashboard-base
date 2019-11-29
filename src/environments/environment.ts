@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  REGISTROS_PER_PAGE : 20,
+  REGISTROS_PER_PAGE : 10,
   URL_API : 'http://localhost:83/symfony4_jwt_base/public/index.php/api',
   URL_RESOURCES : 'http://localhost:83/symfony4_jwt_base/public',
   ROLE_SUPER_ADMIN : 'ROLE_SUPER_ADMIN',
@@ -14,7 +14,8 @@ export const environment = {
   ATRIBUTE_MINISTERIO : 'MINISTERIO DE PRODUCCION',
   ATRIBUTE_SISTEMA_NAME : 'Base Dashboard',
   AUTOR_NAME: 'Andres Brusutti',
-  KEYWORDS: 'Ministerio Produccion, Santa Fe'
+  KEYWORDS: 'Ministerio Produccion, Santa Fe',
+  BADWORDS: ['SELECT', 'INSERT', 'FROM', 'UPDATE', 'DELETE']
 
 };
 

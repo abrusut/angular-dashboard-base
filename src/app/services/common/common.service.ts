@@ -13,10 +13,10 @@ export class CommonService {
   constructor() { }
 
   handlerError(err: any): Exception {
-    let exception: Exception = {};
+    const exception: Exception = {};
     exception.body = '';
-    let commonsExceptionBody = 'Error procesando la peticion <br/>';
-    let commonsExceptionTitle = 'Error en la aplicacion';
+    const commonsExceptionBody = 'Error procesando la peticion <br/>';
+    const commonsExceptionTitle = 'Error en la aplicacion';
     exception.icon = 'error';
     console.log(err);
     if ( err && err !== undefined ) {
@@ -32,21 +32,20 @@ export class CommonService {
         });
       }
       if (err.error !== undefined && err.error.code !== undefined && err.error.message !== undefined ) {
-        if (this.isMessageForUser(err.error.message) ) {
-          exception.body += ` ${err.error.code} - ${err.error.message}`;
-        } else {
+        if (!this.isMessageForUser(err.error.message) ) {
           console.error( ` Message for administrator ${err.error.code} - ${err.error.message}` );
+        } else {
+          exception.body += ` ${err.error.code} - ${err.error.message}`;
+
         }
       }
 
     }
 
-    if ( exception.body === undefined || (exception.body !== undefined && exception.body.length === 0 ))
-    {
+    if ( exception.body === undefined || (exception.body !== undefined && exception.body.length === 0 )) {
       exception.body = commonsExceptionBody;
     }
-    if ( exception.title === undefined || (exception.title !== undefined && exception.title.length === 0 ))
-    {
+    if ( exception.title === undefined || (exception.title !== undefined && exception.title.length === 0 )) {
       exception.title = commonsExceptionTitle;
     }
 
@@ -55,27 +54,17 @@ export class CommonService {
   }
 
   isMessageForUser(message: string): boolean {
-    const words = ['select', 'insert', 'from', 'update', 'delete'];
-    let sendToUser = true;
-    const messageArr = message.split(' ');
-    if ( messageArr !== undefined && messageArr.length > 0) {
-      words.forEach( element => {
-        sendToUser = this.checkWords(messageArr, element);
-        if (!sendToUser) {
-          return false;
-        }
-      });
-    }
-
-    return sendToUser;
-
-  }
-
-  checkWords(arr, val) {
-    return arr.some(function(arrVal) {
-      return val !== arrVal;
+    let isMessageForUser = true;
+    const wordsBlack = environment.BADWORDS;
+    message = message.toLocaleUpperCase();
+    wordsBlack.forEach(word => {
+      const index = message.indexOf(word.toLocaleUpperCase());
+      if ( index > 0) {
+        isMessageForUser = false;
+      }
     });
-  }
+    return isMessageForUser;
 
+  }
 
 }

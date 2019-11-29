@@ -1,46 +1,59 @@
+<p-toolbar class="animated fadeIn">
+  <div class="ui-toolbar-group-left">
+    <div class="ui-g-12 ui-md-4">
+      <div class="ui-inputgroup">
+        <button pButton type="button" label="Buscar"></button>
+        <input #filterNombreOrDniInput type="text" pInputText size="50" placeholder="'Buscar por User, Nombre, Email '"
+          [(ngModel)]="filterNombreOrDni" icon="pi pi-search">
+        <p-button icon="pi pi-trash" type="button" (click)="filterNombreOrDni=null"></p-button>
+      </div>
+    </div>
+  </div>
+  <div class="ui-toolbar-group-right">
+    <button type="button" class="btn btn-primary no-pointer">
+      Usuarios Registrados <span class="badge badge-light">{{totalRecords}}</span>
+      <span class="sr-only"></span>
+    </button>
+  </div>
+</p-toolbar>
+
+
 <div class="row animated fadeIn">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-          <input #filterNombreOrDniInput type="text" pInputText size="50"
-          placeholder="'Apellido Nombre' o 'Documento'"
-          [(ngModel)]="filterNombreOrDni">
-        <button pButton type="button" icon="fa fa-close" (click)="filterNombreOrDni=null"></button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="row animated fadeIn" *ngIf="cargando">
-  <div class="col-sm-12">
 
-    <div class="alert alert-warning text-center">
-      <strong>Cargando</strong>
-      <br>
-      <i class="fa fa-refresh fa-spin fa-2x"></i>
-      <br>
-      <span>Espere por favor...</span>
-    </div>
-  </div>
-</div>
+        <p-toolbar class="animated fadeIn">
+          <div class="ui-toolbar-group-left">
 
-<div class="row animated fadeIn" *ngIf="!cargando">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">
-          Usuarios Registrados(
-          <small>{{totalRecords}}</small>
-          )
-        </h3>
+            <p-splitButton label="Cantidad Registros {{this.nroFilasPorPagina}} " icon="pi pi-filter"
+              (onChange)='onChangeRecordsPerPage($event)' [model]="itemsRecordsPerPage" [(ngModel)]="nroFilasPorPagina">
+            </p-splitButton>
+          </div>
+
+          <div class="ui-toolbar-group-right">
+            <div class="col-12 col-sm-12 col-md-6">
+              <button pButton type="button" icon="pi pi-plus" label="Agregar" [routerLink]="['/usuarios/register','nuevo']"
+                class="ui-button-raised"></button>
+            </div>
+          </div>
+        </p-toolbar>
+
+
 
         <p-table #dt [columns]="cols" [value]="usuarios" [lazy]="true" (onLazyLoad)="loadUsuariosLazy($event)"
-          [paginator]="true" [rows]="nroFilasPorPagina" [totalRecords]="totalRecords" [loading]="loading">
+          [paginator]="true" [rows]="nroFilasPorPagina" [totalRecords]="totalRecords" [loading]="loading"
+          sortMode="multiple">
 
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th *ngFor="let col of columns" [className]="'header-'+col.field">
-                {{col.header}}
+              <th *ngFor="let col of columns" [className]="'header-'+col.field"
+                  [ngSwitch]="col.field">
+                  <div *ngSwitchDefault [pSortableColumn]="col.field" > {{col.header}} <p-sortIcon [field]="col.field"></p-sortIcon></div>
+                  <div *ngSwitchCase="'accion'">{{col.header}}</div>
+
+
               </th>
             </tr>
           </ng-template>
@@ -51,17 +64,19 @@
                 <div *ngSwitchCase="'username'">{{rowUsuario.username}}</div>
                 <div *ngSwitchCase="'name'">{{rowUsuario.name}}</div>
                 <div *ngSwitchCase="'email'">{{rowUsuario.email}}</div>
-                <div *ngSwitchCase="'enabled'">{{rowUsuario.enabled}}</div>
                 <div *ngSwitchCase="'confirmationToken'">{{rowUsuario.confirmationToken}}</div>
+                <div *ngSwitchCase="'enabled'">
+                  <p-inputSwitch [(ngModel)]="rowUsuario.enabled"></p-inputSwitch>
+                </div>
                 <div *ngSwitchCase="'accion'">
-                  <div class="ui-g-12  ui-g-nopad">
-                    <div class="ui-g-3  ui-g-nopad">
-                      <p-button icon="fa fa-edit" iconPos="left" ptooltip="Editar"
-                        (click)="editarUsuario(rowUsuario.id)"></p-button>
-                    </div>
-                    <div class="ui-g-3  ui-g-nopad">
-                      <p-button icon="fa fa-remove" iconPos="left"></p-button>
-                    </div>
+                  <div class="lg-12">
+                    <a href="#" class="btn btn-primary btn-circle btn-sm" (click)="editarUsuario(rowUsuario.id)">
+                      <i class="pi pi-pencil"></i>
+                    </a>
+
+                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                      <i class="pi pi-trash"></i>
+                    </a>
                   </div>
                 </div>
                 <div *ngSwitchDefault>{{rowUsuario[col.field]}}</div>

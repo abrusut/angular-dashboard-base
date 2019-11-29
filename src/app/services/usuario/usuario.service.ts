@@ -17,6 +17,7 @@ import { UserLogin } from '../../domain/userLogin.domain';
 import { environment } from 'src/environments/environment';
 import { CommonService } from '../common/common.service';
 import { Exception } from 'src/app/domain/exception.domain';
+import { SortMeta } from 'primeng/api';
 
 @Injectable()
 export class UsuarioService {
@@ -219,13 +220,29 @@ export class UsuarioService {
     });
   }
 
-  findAllUsuarios(page:number ,size:number,filterNombreOrDni:string) {
-    const url = environment.URL_API + '/users?desde=' + page;
+  findAllUsuarios(page: number , size: number , termino: string, multiSortMeta: SortMeta[]) {
+    let url = `${environment.URL_API}/users?size=${size}&page=${page}`;
+
+    if (termino !== undefined) {
+      url = `${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page}`;
+    }
+     // event.sortField = Field name to sort with
+    // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
+    if (multiSortMeta !== undefined && multiSortMeta.length > 0) {
+      multiSortMeta.forEach( (element: SortMeta) => {
+        let direction = 'asc';
+        if (element.order === -1) {
+          direction = 'desc';
+        }
+        url += `&_order[${element.field}]=${direction}`;
+      });
+    }
+
     return this.http.get(url);
   }
 
-  findUsuarios(termino: string) {
-    const url = environment.URL_API + '/busqueda/colleccion/usuarios/' + termino;
+  findUsuarios(page: number , size: number, termino: string) {
+    const url = ` ${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page} `;
     return this.http.get(url);
   }
 

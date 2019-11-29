@@ -6,9 +6,10 @@ import { ModalUploadService } from '../../components/modal-upload/modal-upload.s
 import { Usuario } from '../../domain/usuario.domain';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectItem, LazyLoadEvent } from 'primeng/api';
+import { SelectItem, LazyLoadEvent, MenuItem, SortEvent, SortMeta } from 'primeng/api';
 import { debounceTime } from 'rxjs/operators';
-
+import { Input } from '@angular/compiler/src/core';
+declare function init_plugins();
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -16,9 +17,11 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class UsuariosComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('filterNombreOrDniInput', {static: false}) filterNombreOrDniInput: ElementRef;
-  public inputObservable: Observable<string>;
+  @ViewChild('filterNombreOrDniInput', { static: true }) filterNombreOrDniInput: ElementRef<any>;
+  public inputObservable: Observable<any>;
 
+  itemsRecordsPerPage: MenuItem[];
+  cantidadRegistrosPorPaginaList: any;
   selectedItem: Usuario;
   filterNombreOrDni: string;
   totalRecords: number;
@@ -28,12 +31,40 @@ export class UsuariosComponent implements OnInit, AfterViewInit {
   loading = false;
   usuarios: Usuario[] = [];
   cols: any[];
-  yearTimeout: any;
+
+  multiSortMeta: SortMeta[];
 
   constructor(public usuarioService: UsuarioService,
               private route: ActivatedRoute,
               private router: Router,
               public modalUploadService: ModalUploadService) {
+                this.itemsRecordsPerPage = [
+                  {label: '5', icon: 'pi pi-bars',
+                  command: () => {
+                    this.onChangeRecordsPerPage(5);
+                  }},
+                  {label: '10', icon: 'pi pi-bars',
+                    command: () => {
+                      this.onChangeRecordsPerPage(10);
+                    }},
+                  {label: '20', icon: 'pi pi-bars',
+                    command: () => {
+                      this.onChangeRecordsPerPage(20);
+                    }},
+                  {label: '30', icon: 'pi pi-bars',
+                  command: () => {
+                    this.onChangeRecordsPerPage(30);
+                  }},
+                  {label: '50', icon: 'pi pi-bars',
+                  command: () => {
+                    this.onChangeRecordsPerPage(50);
+                  }},
+                  {label: '100', icon: 'pi pi-bars',
+                    command: () => {
+                    this.onChangeRecordsPerPage(100);
+                  }}
+                ];
+
                 this.cols = [
                   { field: 'username', header: 'User' },
                   { field: 'name', header: 'Nombre' },
@@ -47,23 +78,35 @@ export class UsuariosComponent implements OnInit, AfterViewInit {
               }
 
   ngOnInit() {
-    this.cargarUsuarios();
+    init_plugins();
+    // this.cargarUsuarios();
     this.modalUploadService.notificacion
       .subscribe( (resp: any) => {
         this.cargarUsuarios();
     });
-  }
-
-  ngAfterViewInit() {
     this.inputObservable = fromEvent(this.filterNombreOrDniInput.nativeElement, 'input');
     this.inputObservable.pipe(
          debounceTime(1000))
-         .subscribe(value => {
-           console.log( `carga usuarios: ${value}`);
-           this.cargarUsuarios();
+         .subscribe(element => {
+            console.log( `carga usuarios: ${element.target.value}`);
+            this.usuarioService.findAllUsuarios(this.paginaActual, this.nroFilasPorPagina, element.target.value, undefined)
+              .subscribe( (resp: any) => {
+                  this.loading = false;
+                  this.usuarios = resp['hydra:member'];
+                  this.totalRecords = resp['hydra:totalItems'];
+
+                  console.log(resp);
+                });
           });
   }
 
+  ngAfterViewInit() {
+
+  }
+
+  ordenarTabla(event: SortEvent) {
+    console.log(event);
+  }
 
   mostrarModal(id: string) {
     this.modalUploadService.mostrarModal('usuarios', id);
@@ -81,36 +124,26 @@ export class UsuariosComponent implements OnInit, AfterViewInit {
     // event.sortField = Field name to sort with
     // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
     // filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-    this.paginaActual = event.first;
+    this.paginaActual = (event.first / this.nroFilasPorPagina) + 1;
+    this.multiSortMeta = event.multiSortMeta;
+
     this.cargarUsuarios();
   }
+
+  onChangeRecordsPerPage(value: any) {
+    this.nroFilasPorPagina = value;
+    console.log(`Ver registros por pagina ${this.nroFilasPorPagina}`);
+    this.cargarUsuarios();
+ }
 
   cargarUsuarios() {
     this.loading = true;
     this.usuarioService.findAllUsuarios(
-      this.paginaActual, this.nroFilasPorPagina, this.filterNombreOrDni)
+      this.paginaActual, this.nroFilasPorPagina, this.filterNombreOrDni, this.multiSortMeta)
       .subscribe( (resp: any) => {
         this.loading = false;
-        this.usuarios = resp.usuarios;
-        this.totalRecords = resp.total;
-
-        console.log(resp);
-      });
-  }
-
-  buscar(termino: string) {
-    console.log( termino );
-
-    if (termino.length <= 0) {
-      this.cargarUsuarios();
-    }
-
-    this.loading = true;
-    this.usuarioService.findUsuarios(termino)
-      .subscribe( (resp: any) => {
-        this.loading = false;
-        this.totalRecords =  resp.totalElements;
-        this.usuarios = resp.usuarios;
+        this.usuarios = resp['hydra:member'];
+        this.totalRecords = resp['hydra:totalItems'];
 
         console.log(resp);
       });

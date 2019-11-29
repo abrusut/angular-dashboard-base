@@ -23,6 +23,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.modulo';
+import { SearchInputComponent } from './components/search-input/search-input.component';
 
 
 
@@ -32,7 +33,8 @@ import { SharedModule } from './shared/shared.modulo';
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    PagesComponent
+    PagesComponent,
+    SearchInputComponent
   ],
   imports: [
     APP_ROUTING,

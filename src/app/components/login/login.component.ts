@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         error => {
           const exception: Exception
               =  this.commonService.handlerError(error);
-          Swal.fire(exception.title, exception.statusCode + ' ' + exception.body, 'error');
+          Swal.fire(exception.title, exception.body, 'error');
         }
       );
   }

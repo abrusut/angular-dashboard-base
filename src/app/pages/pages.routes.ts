@@ -5,8 +5,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import {LoginGuardGuard} from '../services/guards/login-guard.guard';
 import {AdminGuard} from '../services/guards/admin.guard';
 import {ProfileComponent} from './profile/profile.component';
-import {UsuariosComponent} from './usuarios/usuarios.component';
 import {VerificaTokenGuard} from '../services/guards/verifica-token.guard';
+import { UsuarioDetailComponent } from './usuarios/usuarioDetail/usuario-detail.component';
+import { UsuariosListComponent } from './usuarios/usuariosList/usuarios-list.component';
 
 
 /**
@@ -29,15 +30,15 @@ const PAGES_ROUTES: Routes = [
       // Mantenimientos
       {
         path: 'usuarios',
-        component: UsuariosComponent,
+        component: UsuariosListComponent,
         data: { titulo: 'Usuarios',
                 description: 'Mantenimiento de usuarios de la APP' },
         canActivate: [ AdminGuard ]
       },
       {
-        path: 'usuarios/register',
-        component: UsuariosComponent,
-        data: { titulo: 'Usuarios',
+        path: 'usuarios/:id',
+        component: UsuarioDetailComponent,
+        data: { titulo: 'Usuarios ABM',
                 description: 'Mantenimiento de usuarios de la APP' },
         canActivate: [ AdminGuard ]
       },

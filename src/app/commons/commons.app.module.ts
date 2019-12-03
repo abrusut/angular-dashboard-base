@@ -80,8 +80,7 @@ import {PipesModule} from '../pipes/pipes.module';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    // PrimeNg
-      PipesModule
+    PipesModule
     ],
   declarations: [],
   exports: [

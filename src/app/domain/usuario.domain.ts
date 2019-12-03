@@ -1,11 +1,12 @@
 export interface Usuario {
   username?: string;
-  name?: string;
+  fullName?: string;
   email?: string;
   avatar?: string;
   roles?: Array<string>;
   id?: string;
   password?: string;
+  retypedPassword?: string;
   newPassword?: string;
   newRetypedPassword?: string;
   oldPassword?: string;

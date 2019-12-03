@@ -4,13 +4,13 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Perfil del Usuario</h4>
-        <h6 class="card-subtitle">{{usuario.name}}</h6>
+        <h6 class="card-subtitle">{{usuario.fullName}}</h6>
         <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar(f.value)" class="form p-t-20">
           <div class="form-group">
-            <label for="exampleInputuname">Nombre </label>
+            <label for="inputfullName">Nombre </label>
             <div class="input-group">
               <div class="input-group-addon"><i class="ti-user"></i></div>
-              <input [(ngModel)]="usuario.name" name="name" type="text" class="form-control" id="exampleInputuname"
+              <input [(ngModel)]="usuario.fullName" name="fullName" type="text" class="form-control" id="inputfullName"
                 placeholder="Nombre de Usuario" required>
             </div>
           </div>
@@ -37,7 +37,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Fotografia del Usuario</h4>
-        <h6 class="card-subtitle">{{usuario.name}}</h6>
+        <h6 class="card-subtitle">{{usuario.fullName}}</h6>
 
         <img *ngIf="imagenTemp" [src]="imagenTemp" class="img-thumbnail rounded mx-auto d-block" />
 
@@ -62,7 +62,7 @@
         <form ngNativeValidate [formGroup]="forma" (ngSubmit)="cambiarClaveUsuario()"
           class="form-horizontal form-material" id="cambiarClaveUsuario">
           <h4 class="card-title">Cambiar Password</h4>
-          <h6 class="card-subtitle">{{usuario.name}}</h6>
+          <h6 class="card-subtitle">{{usuario.fullName}}</h6>
 
           <div class="form-group">
             <label for="oldPassword">Password Actual</label>

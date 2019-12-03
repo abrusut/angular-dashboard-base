@@ -1,21 +1,21 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Observable, fromEvent } from 'rxjs';
 import Swal from 'sweetalert2';
-import { environment } from '../../../environments/environment';
-import { ModalUploadService } from '../../components/modal-upload/modal-upload.service';
-import { Usuario } from '../../domain/usuario.domain';
-import { UsuarioService } from '../../services/usuario/usuario.service';
+import { environment } from '../../../../environments/environment';
+import { ModalUploadService } from '../../../components/modal-upload/modal-upload.service';
+import { Usuario } from '../../../domain/usuario.domain';
+import { UsuarioService } from '../../../services/usuario/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectItem, LazyLoadEvent, MenuItem, SortEvent, SortMeta } from 'primeng/api';
 import { debounceTime } from 'rxjs/operators';
 import { Input } from '@angular/compiler/src/core';
 declare function init_plugins();
 @Component({
-  selector: 'app-usuarios',
-  templateUrl: './usuarios.component.html',
+  selector: 'app-usuarios-list',
+  templateUrl: './usuarios-list.component.html',
   styles: []
 })
-export class UsuariosComponent implements OnInit, AfterViewInit {
+export class UsuariosListComponent implements OnInit, AfterViewInit {
 
   @ViewChild('filterNombreOrDniInput', { static: true }) filterNombreOrDniInput: ElementRef<any>;
   public inputObservable: Observable<any>;
@@ -114,7 +114,7 @@ export class UsuariosComponent implements OnInit, AfterViewInit {
 
   editarUsuario(id: string) {
     console.log(` Editar Usuario ${id}`);
-    this.router.navigate([`pacientes/pacienteabm/${id}`]);
+    this.router.navigate(['usuarios',  id]);
   }
 
   loadUsuariosLazy(event: LazyLoadEvent) {
@@ -158,7 +158,7 @@ export class UsuariosComponent implements OnInit, AfterViewInit {
 
     Swal.fire({
       title: 'Esta seguro?',
-      text: 'Esta apunto de borrar a ' + usuario.name,
+      text: 'Esta apunto de borrar a ' + usuario.fullName,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -169,7 +169,7 @@ export class UsuariosComponent implements OnInit, AfterViewInit {
       if (result.value) {
         this.usuarioService.borrarUsuario(usuario.id)
             .subscribe( (resp: any) => {
-              Swal.fire('Usuario Borrado', usuario.name, 'success');
+              Swal.fire('Usuario Borrado', usuario.fullName, 'success');
               this.cargarUsuarios();
             });
       }

@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
     this.usuarioService.actualizarPasswordUsuario(usuarioCambioPassword)
       .subscribe( ( resp: any ) => {
         if ( resp ) {
-          Swal.fire('Password Actualizada', this.usuario.name, 'success');
+          Swal.fire('Password Actualizada', this.usuario.fullName, 'success');
         }
       });
 
@@ -78,13 +78,13 @@ export class ProfileComponent implements OnInit {
   guardar(usuario: Usuario) {
     console.log(usuario);
 
-    this.usuario.name = usuario.name;
+    this.usuario.fullName = usuario.fullName;
     this.usuario.email = usuario.email;
 
     this.usuarioService.actualizarUsuario(this.usuario)
       .subscribe( ( resp: any ) => {
         if ( resp ) {
-          Swal.fire('Usuario Actualizado', usuario.name, 'success');
+          Swal.fire('Usuario Actualizado', usuario.fullName, 'success');
         }
       });
   }
@@ -122,11 +122,11 @@ export class ProfileComponent implements OnInit {
     this.usuarioService.uploadImagen(this.archivoASubir, this.usuario.id)
       .then( (resp: any) => {
         if (resp.id !== undefined && resp.id > 0) {
-          Swal.fire('Usuario Actualizado', this.usuario.name, 'success');
+          Swal.fire('Usuario Actualizado', this.usuario.fullName, 'success');
         }
 
       }).catch( (resp: any) => {
-        Swal.fire('Error Actualizado Imagen', this.usuario.name, 'error');
+        Swal.fire('Error Actualizado Imagen', this.usuario.fullName, 'error');
     });
 
 

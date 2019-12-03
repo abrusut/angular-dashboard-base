@@ -72,12 +72,12 @@ export class RegisterComponent implements OnInit {
     console.log(this.forma.value);
 
     const usuario: Usuario = {};
-    usuario.name = this.forma.value.nombre + ` ` + this.forma.value.apellido;
+    usuario.fullName = this.forma.value.nombre + ` ` + this.forma.value.apellido;
     usuario.email = this.forma.value.correo;
     usuario.password = this.forma.value.password;
 
 
-    this.usuarioService.crearUsuario(usuario)
+    this.usuarioService.guardarUsuario(usuario)
       .subscribe( (resp: any) => {
         Swal.fire('Usuario Creado', usuario.email, 'success');
         this.router.navigate(['/login']);

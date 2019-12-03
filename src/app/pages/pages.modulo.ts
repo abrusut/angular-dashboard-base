@@ -13,14 +13,17 @@ import { CommonsAppModule } from '../commons/commons.app.module';
 // Componentes
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
-import { UsuariosComponent } from './usuarios/usuarios.component';
+import { UsuariosListComponent } from './usuarios/usuariosList/usuarios-list.component';
+import { UsuarioDetailComponent } from './usuarios/usuarioDetail/usuario-detail.component';
+
 
 
 @NgModule({
     declarations: [
         DashboardComponent,
         ProfileComponent,
-        UsuariosComponent
+        UsuariosListComponent,
+        UsuarioDetailComponent
     ],
     exports: [
         DashboardComponent

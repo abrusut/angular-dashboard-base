@@ -3,9 +3,10 @@
     <div class="ui-g-12 ui-md-4">
       <div class="ui-inputgroup">
         <button pButton type="button" label="Buscar"></button>
-        <input #filterNombreOrDniInput type="text" pInputText size="50" placeholder="'Buscar por User, Nombre, Email '"
-          [(ngModel)]="filterNombreOrDni" icon="pi pi-search">
-        <p-button icon="pi pi-trash" type="button" (click)="filterNombreOrDni=null"></p-button>
+        <input #filterNombreOrDniInput type="text" pInputText size="50" [(ngModel)]="filterNombreOrDni"
+             placeholder="'Buscar por User, Nombre, Email '"
+           id="filterNombreOrDni" name="filterNombreOrDni" icon="pi pi-search"/>
+        <p-button icon="pi pi-trash" name="clearFilterNombreOrDni" id="clearFilterNombreOrDni" type="button" (click)="filterNombreOrDni=null"></p-button>
       </div>
     </div>
   </div>
@@ -34,7 +35,7 @@
 
           <div class="ui-toolbar-group-right">
             <div class="col-12 col-sm-12 col-md-6">
-              <button pButton type="button" icon="pi pi-plus" label="Agregar" [routerLink]="['/usuarios/register','nuevo']"
+              <button pButton type="button" icon="pi pi-plus" label="Agregar" [routerLink]="['/usuarios','nuevo']"
                 class="ui-button-raised"></button>
             </div>
           </div>
@@ -52,8 +53,6 @@
                   [ngSwitch]="col.field">
                   <div *ngSwitchDefault [pSortableColumn]="col.field" > {{col.header}} <p-sortIcon [field]="col.field"></p-sortIcon></div>
                   <div *ngSwitchCase="'accion'">{{col.header}}</div>
-
-
               </th>
             </tr>
           </ng-template>
@@ -62,7 +61,7 @@
             <tr [pSelectableRow]="rowUsuario">
               <td *ngFor="let col of columns" [ngSwitch]="col.field">
                 <div *ngSwitchCase="'username'">{{rowUsuario.username}}</div>
-                <div *ngSwitchCase="'name'">{{rowUsuario.name}}</div>
+                <div *ngSwitchCase="'fullName'">{{rowUsuario.fullName}}</div>
                 <div *ngSwitchCase="'email'">{{rowUsuario.email}}</div>
                 <div *ngSwitchCase="'confirmationToken'">{{rowUsuario.confirmationToken}}</div>
                 <div *ngSwitchCase="'enabled'">
@@ -70,13 +69,13 @@
                 </div>
                 <div *ngSwitchCase="'accion'">
                   <div class="lg-12">
-                    <a href="#" class="btn btn-primary btn-circle btn-sm" (click)="editarUsuario(rowUsuario.id)">
+                    <button  class="btn btn-primary btn-circle btn-sm" (click)="editarUsuario(rowUsuario.id)">
                       <i class="pi pi-pencil"></i>
-                    </a>
+                    </button>
 
-                    <a href="#" class="btn btn-danger btn-circle btn-sm">
+                    <button  class="btn btn-danger btn-circle btn-sm">
                       <i class="pi pi-trash"></i>
-                    </a>
+                    </button>
                   </div>
                 </div>
                 <div *ngSwitchDefault>{{rowUsuario[col.field]}}</div>

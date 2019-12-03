@@ -135,8 +135,8 @@ export class UsuarioService {
     return params;
   }
 
-  crearUsuario(usuario: Usuario) {
-    const url: string = environment.URL_API + '/usuario';
+  guardarUsuario(usuario: Usuario) {
+    const url: string = environment.URL_API + '/users';
 
     return this.http
       .post(url, usuario)
@@ -241,8 +241,16 @@ export class UsuarioService {
     return this.http.get(url);
   }
 
+  findUsuarioById(id: number): Observable<Usuario> {
+    const url = `${environment.URL_API}/users/${id}`;
+    const params = this.createHttpParams({});
+    return this.http.get<Usuario>(url, { params: params })
+              .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
+
+  }
+
   findUsuarios(page: number , size: number, termino: string) {
-    const url = ` ${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page} `;
+    const url = `${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page} `;
     return this.http.get(url);
   }
 

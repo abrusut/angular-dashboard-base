@@ -136,16 +136,20 @@ export class UsuarioService {
   }
 
   guardarUsuario(usuario: Usuario) {
-    const url: string = environment.URL_API + '/users';
+    let url: string = environment.URL_API + '/users';
 
-    return this.http
-      .post(url, usuario)
-      .pipe(
-          map((resp: any) => {
-            return resp.usuario;
-          }),
-          catchError((error: HttpErrorResponse) => this.handleError(error))
-      );
+    if (usuario !== undefined && usuario.id !== undefined && Number(usuario.id) !== 0 ) {
+     return this.actualizarUsuario(usuario);
+    } else {
+      return this.http
+        .post(url, usuario)
+        .pipe(
+            map((resp: any) => {
+              return resp;
+            }),
+            catchError((error: HttpErrorResponse) => this.handleError(error))
+        );
+    }
   }
 
   actualizarUsuario(usuario: Usuario) {
@@ -163,7 +167,7 @@ export class UsuarioService {
               usuarioDB
             );
           }
-          return true;
+          return resp;
         }),
         catchError(error => {
           const exception: Exception
@@ -254,10 +258,15 @@ export class UsuarioService {
     return this.http.get(url);
   }
 
+  /** Borrado fisico
   borrarUsuario(id: string) {
     let url = environment.URL_API + '/users/' + id;
     url += '?token=' + this.token;
 
     return this.http.delete(url);
+  }
+  */
+  borrarUsuario(usuario: Usuario) {
+   return this.actualizarUsuario(usuario);
   }
 }

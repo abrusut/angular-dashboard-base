@@ -62,7 +62,8 @@ export class UsuarioDetailComponent implements OnInit {
         retypedPassword: ['', [Validators.required, Validators.minLength(6)]],
         fullName: ['', [Validators.required, Validators.minLength(4)]],
         email: ['', [Validators.required, Validators.email]],
-        roles: ['', Validators.required]
+        roles: ['', Validators.required],
+        enabled: ['']
       },
       { validators: this.sonIguales('password', 'retypedPassword') }
     );
@@ -106,6 +107,14 @@ export class UsuarioDetailComponent implements OnInit {
         usuario.retypedPassword = '';
         this.usuario = usuario;
         this.reactiveForm.patchValue(this.usuario);
+
+        // Si esta editando remuevo la obligatoriedad de password
+        this.reactiveForm.get('password').setValidators(null);
+        this.reactiveForm.get('password').setErrors(null);
+        this.reactiveForm.get('password').updateValueAndValidity();
+        this.reactiveForm.get('retypedPassword').setValidators(null);
+        this.reactiveForm.get('retypedPassword').setErrors(null);
+        this.reactiveForm.get('retypedPassword').updateValueAndValidity();
       });
   }
 
@@ -150,6 +159,8 @@ export class UsuarioDetailComponent implements OnInit {
     this.usuario = this.reactiveForm.value;
     this.usuario.id = idAux;
 
+    console.log("Object to save");
+    console.log(JSON.stringify(this.reactiveForm.value));
     console.log(`Guardar Usuario ${this.reactiveForm.value} `);
     this.usuarioService.guardarUsuario(this.usuario).subscribe(
       (usuario: Usuario) => {

@@ -1,3 +1,4 @@
+<p-growl [(value)]="msgs"></p-growl>
 <p-toolbar class="animated fadeIn">
   <div class="ui-toolbar-group-left">
     <div class="ui-g-12 ui-md-4">
@@ -65,7 +66,7 @@
                 <div *ngSwitchCase="'email'">{{rowUsuario.email}}</div>
                 <div *ngSwitchCase="'confirmationToken'">{{rowUsuario.confirmationToken}}</div>
                 <div *ngSwitchCase="'enabled'">
-                  <p-inputSwitch [(ngModel)]="rowUsuario.enabled"></p-inputSwitch>
+                  <p-inputSwitch [(ngModel)]="rowUsuario.enabled" (click)="enabledUser(rowUsuario)" ></p-inputSwitch>
                 </div>
                 <div *ngSwitchCase="'accion'">
                   <div class="lg-12">
@@ -73,7 +74,7 @@
                       <i class="pi pi-pencil"></i>
                     </button>
 
-                    <button  class="btn btn-danger btn-circle btn-sm">
+                    <button  class="btn btn-danger btn-circle btn-sm" (click)="borrar(rowUsuario)">
                       <i class="pi pi-trash"></i>
                     </button>
                   </div>

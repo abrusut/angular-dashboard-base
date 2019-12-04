@@ -46,6 +46,15 @@ export class CommonService {
         }
       }
 
+      if (err !== undefined && err.error !== undefined && err.error['hydra:description'] !== undefined &&
+           err.error['hydra:description'].length > 0) {
+        exception.body += ` ${err.error['hydra:description']}`;
+      }
+
+      if (err !== undefined && err.statusText !== undefined && err.statusText.length > 0) {
+        exception.body += ` ${err.statusText}`;
+      }
+
     }
 
     if ( exception.body === undefined || (exception.body !== undefined && exception.body.length === 0 )) {

@@ -6,13 +6,21 @@
         <form [formGroup]="reactiveForm" (ngSubmit)="guardar()" class="form-horizontal form-material" id="abmusuario">
 
           <h2 class="card-title" *ngIf="!this.usuario?.id">Nuevo Usuario</h2>
-          <h2 class="card-title" *ngIf="this.usuario?.id">Editar Usuario</h2>
-          <h6 class="card-subtitle" *ngIf="this.usuario?.id">{{usuario?.fullName}}</h6>
+          <div *ngIf="this.usuario?.id">
+            <h2 class="card-title" >Editar Usuario {{usuario?.fullName}}</h2>
+          </div>
+
           <div class="form-row">
+              <div class="form-group col-6" *ngIf="this.usuario?.id">
+                <label for="username">Username</label>
+                <input type="text" pInputText class="form-control" readonly id="username" name="username"
+                formControlName="username" placeholder="Username" *ngIf="this.usuario?.id" >
+              </div>
+
             <div class="form-group col-6">
-              <label for="username">Username</label>
+              <label for="username" *ngIf="!this.usuario?.id">Username</label>
               <input type="text" pInputText class="form-control" id="username" name="username"
-                formControlName="username" placeholder="Username">
+                formControlName="username" placeholder="Username" *ngIf="!this.usuario?.id" >
               <div
                 *ngIf="reactiveForm.controls['username'].invalid && (reactiveForm.controls['username'].dirty || reactiveForm.controls['username'].touched)"
                 class="alert alert-danger">
@@ -107,6 +115,15 @@
                 formControlName="roles"></p-multiSelect>
             </div>
           </div>
+
+          <div class="form-row">
+              <div class="form-group col-6">
+                  <p-inputSwitch formControlName="enabled"></p-inputSwitch>
+              </div>
+            </div>
+
+
+
           <div class="row col-lg-12">
             <button type="submit" [disabled]="!reactiveForm.valid"
               class="btn btn-success waves-effect waves-light m-r-10">
@@ -120,6 +137,7 @@
             </button>
           </div>
           {{reactiveForm.valid}}
+          {{reactiveForm.errors |json}}
         </form>
       </div>
     </div>

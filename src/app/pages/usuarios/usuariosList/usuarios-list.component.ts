@@ -6,9 +6,11 @@ import { ModalUploadService } from '../../../components/modal-upload/modal-uploa
 import { Usuario } from '../../../domain/usuario.domain';
 import { UsuarioService } from '../../../services/usuario/usuario.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectItem, LazyLoadEvent, MenuItem, SortEvent, SortMeta } from 'primeng/api';
+import { SelectItem, LazyLoadEvent, MenuItem, SortEvent, SortMeta, Message } from 'primeng/api';
 import { debounceTime } from 'rxjs/operators';
 import { Input } from '@angular/compiler/src/core';
+import { Exception } from 'src/app/domain/exception.domain';
+import { CommonService } from 'src/app/services/service.index';
 declare function init_plugins();
 @Component({
   selector: 'app-usuarios-list',
@@ -27,6 +29,7 @@ export class UsuariosListComponent implements OnInit, AfterViewInit {
   totalRecords: number;
   nroFilasPorPagina: number = environment.REGISTROS_PER_PAGE;
   paginaActual = 0;
+  public msgs: Message[];
 
   loading = false;
   usuarios: Usuario[] = [];
@@ -37,6 +40,7 @@ export class UsuariosListComponent implements OnInit, AfterViewInit {
   constructor(public usuarioService: UsuarioService,
               private route: ActivatedRoute,
               private router: Router,
+              private commonService: CommonService,
               public modalUploadService: ModalUploadService) {
                 this.itemsRecordsPerPage = [
                   {label: '5', icon: 'pi pi-bars',
@@ -67,7 +71,7 @@ export class UsuariosListComponent implements OnInit, AfterViewInit {
 
                 this.cols = [
                   { field: 'username', header: 'User' },
-                  { field: 'name', header: 'Nombre' },
+                  { field: 'fullName', header: 'Nombre' },
                   { field: 'email', header: 'Email' },
                   { field: 'enabled', header: 'Activo' },
                   { field: 'confirmationToken', header: 'Confirmation Token' },
@@ -106,6 +110,34 @@ export class UsuariosListComponent implements OnInit, AfterViewInit {
 
   ordenarTabla(event: SortEvent) {
     console.log(event);
+  }
+
+  enabledUser(usuario: Usuario) {
+    console.log(`enabled user ${usuario}` );
+    this.usuarioService.guardarUsuario(usuario).subscribe(
+      (usuarioResp: Usuario) => {
+        this.msgs = [];
+        let accionTxt = 'Habilitado';
+        if (!usuarioResp.enabled) {
+          accionTxt = 'Deshabilitado';
+        }
+        this.msgs.push({
+          severity: 'info',
+          summary: `Usuario ${usuario.username} ${accionTxt}`,
+          detail: usuario.fullName
+        });
+      },
+      error => {
+        const exception: Exception
+              =  this.commonService.handlerError(error);
+        this.msgs = [];
+        this.msgs.push({
+          severity: 'error',
+          summary: `${exception.title}`,
+          detail: exception.body
+        });
+      }
+    );
   }
 
   mostrarModal(id: string) {
@@ -167,9 +199,11 @@ export class UsuariosListComponent implements OnInit, AfterViewInit {
     })
     .then((result) => {
       if (result.value) {
-        this.usuarioService.borrarUsuario(usuario.id)
+        // no se borra fisicamente solo se desactiva
+        usuario.enabled = false;
+        this.usuarioService.borrarUsuario(usuario)
             .subscribe( (resp: any) => {
-              Swal.fire('Usuario Borrado', usuario.fullName, 'success');
+              Swal.fire('Usuario Deshabilitado', usuario.fullName, 'success');
               this.cargarUsuarios();
             });
       }

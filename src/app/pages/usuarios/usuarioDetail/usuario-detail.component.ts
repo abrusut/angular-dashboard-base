@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/domain/usuario.domain';
 import { CommonService, UsuarioService } from 'src/app/services/service.index';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Message, SelectItem } from 'primeng/api';
 import Swal from 'sweetalert2';
@@ -19,12 +19,14 @@ declare function init_plugins();
   styleUrls: ['./usuario-detail.component.scss']
 })
 export class UsuarioDetailComponent implements OnInit {
+  submitted = false;
   usuario: Usuario = {};
   public reactiveForm: FormGroup;
   public msgs: Message[];
+  formCambioPassword: FormGroup;
 
-  rolesDisponibles: SelectItem[];
-  selectedRoles: string[];
+  rolesDisponibles: SelectItem[] = [];
+  selectedRoles: Array<string> = [];
   ROLES_ARRAY: any[] = environment.ROLES_ARRAY;
 
   constructor(
@@ -35,24 +37,32 @@ export class UsuarioDetailComponent implements OnInit {
     public activatedRoute: ActivatedRoute
   ) {}
 
+   // convenience getter for easy access to form fields
+   get f() { return this.reactiveForm.controls; }
+   get fcp() { return this.formCambioPassword.controls; }
+
   ngOnInit() {
     init_plugins();
 
-    this.rolesDisponibles = [
-      {label: 'Seleccionar Roles', value: null}
-    ];
+
     this.ROLES_ARRAY.forEach(element => {
       this.rolesDisponibles.push({label: element, value: element});
     });
 
+    this.formCambioPassword = new FormGroup({
+      oldPassword: new FormControl(null, Validators.required),
+      newPassword: new FormControl(null, Validators.required),
+      newRetypedPassword: new FormControl(null, Validators.required)
+    }, { validators: this.sonIguales( 'newPassword', 'newRetypedPassword' ) });
+
     this.reactiveForm = this.fb.group(
       {
-        username: [null, [Validators.required, Validators.minLength(4)]],
-        password: [null, Validators.required],
-        retypedPassword: [null, Validators.required],
-        fullName: [null, [Validators.required, Validators.minLength(4)]],
-        email: [null, Validators.required],
-        roles: [null, Validators.required]
+        username: ['', [Validators.required, Validators.minLength(4)]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        retypedPassword: ['', [Validators.required, Validators.minLength(6)]],
+        fullName: ['', [Validators.required, Validators.minLength(4)]],
+        email: ['', [Validators.required, Validators.email]],
+        roles: ['', Validators.required]
       },
       { validators: this.sonIguales('password', 'retypedPassword') }
     );
@@ -67,6 +77,9 @@ export class UsuarioDetailComponent implements OnInit {
 
   }
 
+   // ==================================
+  // Verifica Password Iguales
+  // ==================================
   sonIguales(campo1: string, campo2: string) {
     return (group: FormGroup) => {
       const pass1 = group.controls[campo1].value;
@@ -82,6 +95,9 @@ export class UsuarioDetailComponent implements OnInit {
     };
   }
 
+  // ==================================
+  // Cargar Usuario para Editar
+  // ==================================
   cargarUsuario(id: string) {
     this.usuarioService
       .findUsuarioById(Number(id))
@@ -89,12 +105,47 @@ export class UsuarioDetailComponent implements OnInit {
         usuario.password = '';
         usuario.retypedPassword = '';
         this.usuario = usuario;
-
         this.reactiveForm.patchValue(this.usuario);
       });
   }
 
+  // ==================================
+  // Actualizacion Password
+  // ==================================
+  cambiarClaveUsuario() {
+    if ( this.formCambioPassword.invalid ) {
+      Swal.fire('Importante', 'Debe completar todo el formulario', 'warning');
+      return;
+    }
+
+    console.log('Forma Valida', this.formCambioPassword.valid);
+    console.log(this.formCambioPassword.value);
+
+    const usuarioCambioPassword: Usuario = {};
+    usuarioCambioPassword.id = this.usuario.id;
+    usuarioCambioPassword.newPassword = this.formCambioPassword.value.newPassword;
+    usuarioCambioPassword.newRetypedPassword = this.formCambioPassword.value.newRetypedPassword;
+    usuarioCambioPassword.oldPassword = this.formCambioPassword.value.oldPassword;
+    this.usuarioService.actualizarPasswordUsuario(usuarioCambioPassword)
+      .subscribe( ( resp: any ) => {
+        if ( resp ) {
+          Swal.fire('Password Actualizada', this.usuario.fullName, 'success');
+        }
+      });
+
+  }
+
+
+  // ==================================
+  // Guardar Usuario Nuevo
+  // ==================================
   guardar() {
+    this.submitted = true;
+    if ( this.reactiveForm.invalid ) {
+      Swal.fire('Importante', 'Debe completar todo el formulario', 'warning');
+      return;
+    }
+
     const idAux = this.usuario.id;
     this.usuario = this.reactiveForm.value;
     this.usuario.id = idAux;
@@ -131,6 +182,7 @@ export class UsuarioDetailComponent implements OnInit {
       this.router.navigate([`usuarios`]);
     } else {
       this.reactiveForm.reset();
+      this.submitted = false;
     }
   }
 }

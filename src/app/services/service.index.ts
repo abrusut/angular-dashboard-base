@@ -10,3 +10,4 @@ export { SharedService } from './shared/shared.service';
 export { SidebarService } from './shared/sidebar.service';
 export { UsuarioService } from './usuario/usuario.service';
 export { CommonService } from './common/common.service';
+export { RouterExtService } from './shared/RouterExtService';

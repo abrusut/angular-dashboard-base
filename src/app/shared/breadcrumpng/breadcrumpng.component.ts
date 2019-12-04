@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { Router, ActivationEnd  } from '@angular/router';
+import { Router, ActivationEnd, RoutesRecognized, NavigationEnd  } from '@angular/router';
 import { Title, Meta, MetaDefinition } from '@angular/platform-browser';
-import { map, filter, scan } from 'rxjs/operators';
+import { map, filter, scan, pairwise } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-
+import { Observable } from 'rxjs';
+import { RouterExtService } from 'src/app/services/shared/RouterExtService';
+import 'rxjs/add/operator/filter';
 
 @Component({
   selector: 'app-breadcrumpng',
@@ -31,7 +33,8 @@ export class BreadcrumpngComponent implements OnInit {
   constructor(
     private router: Router,
     private title: Title,
-    private meta: Meta
+    private meta: Meta,
+    private routerService: RouterExtService
   ) {
     this.getDataRoute().subscribe(data => {
       // console.log(data);
@@ -55,6 +58,8 @@ export class BreadcrumpngComponent implements OnInit {
             { label: 'Pages' }
           ];
           this.home = {icon: 'pi pi-home'};
+
+          // add current route
           this.items.push( {label : this.label, url: this.url} );
         }
         this.addMetaTag('description', this.descripcion);
@@ -92,6 +97,14 @@ export class BreadcrumpngComponent implements OnInit {
       map((evento: ActivationEnd) => {
         return evento.snapshot.data;
       })
+    );
+  }
+
+  get previousRoute$(): Observable<string> {
+    return this.router.events.pipe(
+      filter(e => e instanceof RoutesRecognized),
+      pairwise(),
+      map((e: [RoutesRecognized, RoutesRecognized]) => e[0].url)
     );
   }
 }

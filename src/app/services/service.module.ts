@@ -11,7 +11,8 @@ import {SettingsService,
         VerificaTokenGuard,
         SubirArchivoService,
         ModalUploadService,
-        CommonService
+        CommonService,
+        RouterExtService
 } from './service.index';
 
 
@@ -31,7 +32,8 @@ import {SettingsService,
     VerificaTokenGuard,
     SubirArchivoService,
     ModalUploadService,
-    CommonService
+    CommonService,
+    RouterExtService
   ]
 })
 export class ServiceModule { }

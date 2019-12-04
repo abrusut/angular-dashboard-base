@@ -1,69 +1,173 @@
 <p-growl [(value)]="msgs"></p-growl>
-<div class="col-lg-12">
-  <div class="card">
-    <div class="card-body">
-      <form ngNativeValidate [formGroup]="reactiveForm" (ngSubmit)="guardar()"
-            class="form-horizontal form-material"
-            id="abmusuario">
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="reactiveForm" (ngSubmit)="guardar()" class="form-horizontal form-material" id="abmusuario">
 
-        <h2 class="card-title" *ngIf="!this.usuario?.id">Nuevo Usuario</h2>
-        <h2 class="card-title" *ngIf="this.usuario?.id">Editar Usuario</h2>
-        <h6 class="card-subtitle" *ngIf="this.usuario?.id">{{usuario?.fullName}}</h6>
-        <div class="form-row">
-          <div class="form-group col-4">
-            <label for="username">Username</label>
-            <input type="text" pInputText class="form-control" id="username" name="username" formControlName="username"
-              placeholder="Username">
+          <h2 class="card-title" *ngIf="!this.usuario?.id">Nuevo Usuario</h2>
+          <h2 class="card-title" *ngIf="this.usuario?.id">Editar Usuario</h2>
+          <h6 class="card-subtitle" *ngIf="this.usuario?.id">{{usuario?.fullName}}</h6>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="username">Username</label>
+              <input type="text" pInputText class="form-control" id="username" name="username"
+                formControlName="username" placeholder="Username">
+              <div
+                *ngIf="reactiveForm.controls['username'].invalid && (reactiveForm.controls['username'].dirty || reactiveForm.controls['username'].touched)"
+                class="alert alert-danger">
+                <div *ngIf="reactiveForm.controls['username'].errors.required">
+                  Username es requerido.
+                </div>
+                <div *ngIf="reactiveForm.controls['username'].errors.minlength">
+                  Debe tener al menos {{reactiveForm.controls['username'].errors.minlength.requiredLength }} carecteres
+                </div>
+              </div>
+            </div>
           </div>
+          <div class="form-group row" *ngIf="!this.usuario?.id">
+            <div class="col-lg-6 col-sm-6 mb-3 mb-sm-0">
+              <input formControlName="password" data-toggle="password" name="password" class="form-control"
+                type="password" placeholder="Password">
+            </div>
+            <div
+              *ngIf="reactiveForm.controls['password'].invalid && (reactiveForm.controls['password'].dirty || reactiveForm.controls['password'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="reactiveForm.controls['password'].errors.required">
+                Password es requerido.
+              </div>
+              <div *ngIf="reactiveForm.controls['password'].errors.minlength">
+                Debe tener al menos {{reactiveForm.controls['password'].errors.minlength.requiredLength }} carecteres
+              </div>
+            </div>
 
-          <div class="form-group col-4">
-            <label for="password">Password</label>
-            <input type="password" pInputText data-toggle="password" name="password"
-                  class="form-control" id="password"
-                  formControlName="password" placeholder="Password">
-          </div>
+            <div class="col-lg-6 col-sm-6">
+              <input formControlName="retypedPassword" data-toggle="password" name="retypedPassword"
+                class="form-control" type="password" required placeholder="Confirmar Password">
+            </div>
 
-          <div class="form-group col-4">
-            <label for="retypedPassword">Confirme Password</label>
-            <input type="password" data-toggle="password" pInputText name="retypedPassword"
-                  class="form-control"
-                  id="retypedPassword" formControlName="retypedPassword" placeholder="Confirme Password">
+            <div
+              *ngIf="reactiveForm.controls['retypedPassword'].invalid && (reactiveForm.controls['retypedPassword'].dirty || reactiveForm.controls['retypedPassword'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="reactiveForm.controls['retypedPassword'].errors.required">
+                Debe confirmar la password
+              </div>
+              <div *ngIf="reactiveForm.controls['retypedPassword'].errors.minlength">
+                Debe tener al menos {{reactiveForm.controls['retypedPassword'].errors.minlength.requiredLength }}
+                carecteres
+              </div>
+            </div>
+
+            <div class="form-group " *ngIf="reactiveForm.errors?.sonIguales && !reactiveForm.pristine">
+              <p class="text-danger">
+                Las Contraseñas deben ser iguales
+              </p>
+            </div>
           </div>
-          <div class="form-group " *ngIf="reactiveForm.errors?.sonIguales && !reactiveForm.pristine">
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label for="fullName">Nombre y Apellido</label>
+              <input type="text" class="form-control" name="fullName" id="fullName" pInputText
+                formControlName="fullName" placeholder="Nombre y Apellido">
+            </div>
+            <div
+              *ngIf="reactiveForm.controls['fullName'].invalid && (reactiveForm.controls['fullName'].dirty || reactiveForm.controls['fullName'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="reactiveForm.controls['fullName'].errors.required">
+                Nombre y Apellido es requerido.
+              </div>
+              <div *ngIf="reactiveForm.controls['fullName'].errors.minlength">
+                Debe tener al menos {{reactiveForm.controls['fullName'].errors.minlength.requiredLength }} carecteres
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="email">Email</label>
+              <input pInputText type="email" pInputText class="form-control" name="email" id="email"
+                formControlName="email" placeholder="Email" >
+            </div>
+            <div
+              *ngIf="reactiveForm.controls['email'].invalid && (reactiveForm.controls['email'].dirty || reactiveForm.controls['email'].touched)"
+              class="alert alert-danger">
+              <div *ngIf="reactiveForm.controls['email'].errors.required">
+                Email es requerido.
+              </div>
+              <div *ngIf="reactiveForm.controls['email'].errors.email">
+                Debe ser un email valido
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="roles">Roles</label>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <p-multiSelect [options]="rolesDisponibles" name="roles" id="roles" defaultLabel="Seleccione Role"
+                formControlName="roles"></p-multiSelect>
+            </div>
+          </div>
+          <div class="row col-lg-12">
+            <button type="submit" [disabled]="!reactiveForm.valid"
+              class="btn btn-success waves-effect waves-light m-r-10">
+              <i class="fa fa-save"></i>
+              Guardar
+            </button>
+
+            <button type="button" (click)="cancelar()" class="btn btn-secondary ml-4">
+              <i class="pi pi-caret-left"></i>
+              Cancelar
+            </button>
+          </div>
+          {{reactiveForm.valid}}
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6" *ngIf="this.usuario?.id">
+    <div class="card">
+      <div class="card-body">
+        <form ngNativeValidate [formGroup]="formCambioPassword" (ngSubmit)="cambiarClaveUsuario()"
+          class="form-horizontal form-material" id="cambiarClaveUsuario">
+          <h4 class="card-title">Cambiar Password</h4>
+          <h6 class="card-subtitle">{{usuario.fullName}}</h6>
+
+          <div class="form-group">
+            <label for="oldPassword">Password Actual</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-lock"></i></div>
+              <input type="password" data-toggle="password" class="form-control" formControlName="oldPassword"
+                id="oldPassword" name="oldPassword" placeholder="Password Actual">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">Nueva Password</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-lock"></i></div>
+              <input type="password" data-toggle="password" class="form-control" id="newPassword" name="newPassword"
+                formControlName="newPassword" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="newRetypedPassword">Confirme Password</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-lock"></i></div>
+              <input type="password" data-toggle="password" formControlName="newRetypedPassword"
+                name="newRetypedPassword" class="form-control" id="newRetypedPassword" placeholder="Confirme Password">
+            </div>
+          </div>
+          <div class="form-group " *ngIf="formCambioPassword.errors?.sonIguales && !formCambioPassword.pristine">
             <p class="text-danger">
               Las Contraseñas deben ser iguales
             </p>
           </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group col-6">
-            <label for="fullName">Nombre y Apellido</label>
-            <input type="text" class="form-control" name="fullName" id="fullName" pInputText formControlName="fullName"
-              placeholder="Nombre y Apellido">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="email">Email</label>
-            <input pInputText type="email" pInputText class="form-control" name="email" id="email"
-              formControlName="email" placeholder="Email">
-          </div>
-        </div>
-        <div class="ui-g-12 ui-md-4">
-          <p-listbox [options]="rolesDisponibles" formControlName="roles"></p-listbox>
-        </div>
-        <div class="row col-lg-12">
-          <button type="submit" [disabled]="!reactiveForm.valid"
-            class="btn btn-success waves-effect waves-light m-r-10">
+          <button type="button" class="btn btn-warning waves-effect waves-light m-r-10" (click)="cambiarClaveUsuario()">
             <i class="fa fa-save"></i>
-            Guardar
+            Cambiar Password
           </button>
-
-          <button type="button" (click)="cancelar()" class="btn btn-secondary ml-4">
-            <i class="pi pi-caret-left"></i>
-            Cancelar
-          </button>
-        </div>
-        {{reactiveForm.valid}}
-      </form>
+        </form>
+      </div>
     </div>
+
   </div>
-</div>

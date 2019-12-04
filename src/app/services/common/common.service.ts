@@ -28,7 +28,13 @@ export class CommonService {
       if (err.error !== undefined && err.error.violations !== undefined && err.error.violations.length > 0) {
 
         err.error.violations.forEach(violation => {
-          exception.body = ` ${violation.message} ` ;
+          if (violation.propertyPath !== undefined) {
+            exception.body = ` ${violation.propertyPath} : `;
+            exception.body += ` ${violation.message} ` ;
+          } else {
+            exception.body = ` ${violation.message} ` ;
+          }
+
         });
       }
       if (err.error !== undefined && err.error.code !== undefined && err.error.message !== undefined ) {

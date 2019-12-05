@@ -25,8 +25,8 @@ export class ProfileComponent implements OnInit {
 
     this.forma = new FormGroup({
       oldPassword: new FormControl(null, Validators.required),
-      newPassword: new FormControl(null, Validators.required),
-      newRetypedPassword: new FormControl(null, Validators.required)
+      newPassword: new FormControl(null, [Validators.required, Validators.minLength(7)]),
+      newRetypedPassword: new FormControl(null, [Validators.required, Validators.minLength(7)])
     }, { validators: this.sonIguales( 'newPassword', 'newRetypedPassword' ) });
   }
 
@@ -128,7 +128,6 @@ export class ProfileComponent implements OnInit {
       }).catch( (resp: any) => {
         Swal.fire('Error Actualizado Imagen', this.usuario.fullName, 'error');
     });
-
-
   }
+
 }

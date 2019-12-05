@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { CommonService } from '../common/common.service';
 import { SecurityService } from './security.service';
 
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class AdminGuard implements CanActivate {
@@ -20,6 +21,8 @@ export class AdminGuard implements CanActivate {
       return true;
     } else {
       console.log('Bloqueado por AdminGuard');
+      Swal.fire(this.usuarioService.usuario.fullName, `Usted ${this.usuarioService.usuario.fullName} no cuenta con los
+      permisos adecuados para acceder a esta seccion`, 'error');
       this.usuarioService.logout();
       return false;
     }

@@ -76,7 +76,7 @@ export class UsuariosListComponent implements OnInit, AfterViewInit {
                   { field: 'enabled', header: 'Activo' },
                   { field: 'confirmationToken', header: 'Confirmation Token' },
                   { field: 'roles', header: 'Roles' },
-                  { field: 'passwordChangeDate', header: 'Cambio Password' },
+                  { field: 'passwordChangeDateFormated', header: 'Cambio Password' },
                   { field: 'accion', header: 'Acciones' }
                 ];
               }

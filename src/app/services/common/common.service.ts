@@ -26,13 +26,12 @@ export class CommonService {
         console.error(`Mensaje de la aplicacion ${err.status} - ${err.statusText} - ${err.url}` );
       }
       if (err.error !== undefined && err.error.violations !== undefined && err.error.violations.length > 0) {
-
         err.error.violations.forEach(violation => {
           if (violation.propertyPath !== undefined) {
-            exception.body = ` ${violation.propertyPath} : `;
-            exception.body += ` ${violation.message} ` ;
+              exception.body = ` ${violation.propertyPath} : `;
+              exception.body += ` ${violation.message} <br/>` ;
           } else {
-            exception.body = ` ${violation.message} ` ;
+              exception.body = `${violation.message} <br/>` ;
           }
 
         });
@@ -41,18 +40,22 @@ export class CommonService {
         if (!this.isMessageForUser(err.error.message) ) {
           console.error( ` Message for administrator ${err.error.code} - ${err.error.message}` );
         } else {
-          exception.body += ` ${err.error.code} - ${err.error.message}`;
+          exception.body += ` ${err.error.code} - ${err.error.message} <br/>`;
 
         }
       }
 
-      if (err !== undefined && err.error !== undefined && err.error['hydra:description'] !== undefined &&
+      if ((exception.body === undefined ||
+          (exception.body !== undefined && exception.body.length === 0))
+        && err !== undefined && err.error !== undefined && err.error['hydra:description'] !== undefined &&
            err.error['hydra:description'].length > 0) {
-        exception.body += ` ${err.error['hydra:description']}`;
+        exception.body += ` ${err.error['hydra:description']} <br/>`;
       }
 
-      if (err !== undefined && err.statusText !== undefined && err.statusText.length > 0) {
-        exception.body += ` ${err.statusText}`;
+      if ((exception.body === undefined ||
+            (exception.body !== undefined && exception.body.length === 0))
+          && err !== undefined && err.statusText !== undefined && err.statusText.length > 0) {
+        exception.body += ` ${err.statusText} <br/>`;
       }
 
     }

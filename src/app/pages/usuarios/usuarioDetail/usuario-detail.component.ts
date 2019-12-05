@@ -24,10 +24,13 @@ export class UsuarioDetailComponent implements OnInit {
   public reactiveForm: FormGroup;
   public msgs: Message[];
   formCambioPassword: FormGroup;
+  archivoASubir: File;
+  imagenTemp: any;
 
   rolesDisponibles: SelectItem[] = [];
   selectedRoles: Array<string> = [];
   ROLES_ARRAY: any[] = environment.ROLES_ARRAY;
+  nonWhiteSpaceRegExp: RegExp = new RegExp('^[_A-z0-9]{1,}$');
 
   constructor(
     private fb: FormBuilder,
@@ -57,9 +60,10 @@ export class UsuarioDetailComponent implements OnInit {
 
     this.reactiveForm = this.fb.group(
       {
-        username: ['', [Validators.required, Validators.minLength(4)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        retypedPassword: ['', [Validators.required, Validators.minLength(6)]],
+        username: ['', [Validators.required, Validators.minLength(4),
+                        Validators.pattern(this.nonWhiteSpaceRegExp)]],
+        password: ['', [Validators.required, Validators.minLength(7)]],
+        retypedPassword: ['', [Validators.required, Validators.minLength(7)]],
         fullName: ['', [Validators.required, Validators.minLength(4)]],
         email: ['', [Validators.required, Validators.email]],
         roles: ['', Validators.required],
@@ -196,4 +200,48 @@ export class UsuarioDetailComponent implements OnInit {
       this.submitted = false;
     }
   }
+
+  // ==================================
+  // Subida de archivos
+  // ==================================
+  seleccionImagen(archivo: File) {
+    if (!archivo) {
+      this.archivoASubir = null;
+      return;
+    }
+
+    if ( archivo.type.indexOf('image') < 0) {
+      Swal.fire('Solo Imagenes', 'El archivo seleccionado no es una imagen', 'error');
+      this.archivoASubir = null;
+      return;
+    }
+
+    this.archivoASubir = archivo;
+
+    // Cargar vista previa
+    const reader = new FileReader();
+    const urlImagenTemp = reader.readAsDataURL(archivo);
+
+    reader.onloadend = () => {
+        // Imagen en base64
+        this.imagenTemp = reader.result;
+    };
+
+
+  }
+
+  subirArchivo() {
+    this.usuarioService.uploadImagen(this.archivoASubir, this.usuario.id)
+      .then( (resp: any) => {
+        if (resp.id !== undefined && resp.id > 0) {
+          Swal.fire('Usuario Actualizado', this.usuario.fullName, 'success');
+        }
+
+      }).catch( (error: any) => {
+        const exception: Exception
+            =  this.commonService.handlerError(error);
+        Swal.fire(exception.title, exception.body, 'error');
+    });
+  }
+
 }

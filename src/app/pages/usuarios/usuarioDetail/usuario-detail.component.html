@@ -1,6 +1,29 @@
 <p-growl [(value)]="msgs"></p-growl>
 <div class="row">
-  <div class="col-lg-12">
+
+    <div class="col-lg-4" *ngIf="this.usuario?.id">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Fotografia del Usuario</h4>
+            <h6 class="card-subtitle">{{usuario.fullName}}</h6>
+
+            <img *ngIf="imagenTemp" [src]="imagenTemp" class="img-thumbnail rounded mx-auto d-block" />
+
+            <img *ngIf="!imagenTemp" [src]="usuario.avatar | imagen" class="img-thumbnail rounded mx-auto d-block" />
+
+            <input type="file" class="mt-2" (change)="seleccionImagen( $event.target.files[0] )">
+
+            <button (click)="subirArchivo()" [disabled]="!archivoASubir" type="submit"
+              class="mt-2 btn btn-success btn-block waves-effect waves-light m-r-10">
+              <i class="fa fa-save"></i>
+              Actualizar Foto
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+  <div class="col-lg-8">
     <div class="card">
       <div class="card-body">
         <form [formGroup]="reactiveForm" (ngSubmit)="guardar()" class="form-horizontal form-material" id="abmusuario">
@@ -13,17 +36,21 @@
           <div class="form-row">
               <div class="form-group col-6" *ngIf="this.usuario?.id">
                 <label for="username">Username</label>
-                <input type="text" pInputText class="form-control" readonly id="username" name="username"
-                formControlName="username" placeholder="Username" *ngIf="this.usuario?.id" >
+                <input type="text" pInputText class="form-control" readonly id="username"
+                        name="username" formControlName="username" placeholder="Username" *ngIf="this.usuario?.id" >
               </div>
 
             <div class="form-group col-6">
               <label for="username" *ngIf="!this.usuario?.id">Username</label>
               <input type="text" pInputText class="form-control" id="username" name="username"
-                formControlName="username" placeholder="Username" *ngIf="!this.usuario?.id" >
+                    formControlName="username" placeholder="Username" *ngIf="!this.usuario?.id" >
+
               <div
                 *ngIf="reactiveForm.controls['username'].invalid && (reactiveForm.controls['username'].dirty || reactiveForm.controls['username'].touched)"
                 class="alert alert-danger">
+                <div *ngIf="reactiveForm.controls['username'].errors.pattern">
+                    No debe tener espacios en blanco ni caracteres especiales.
+                  </div>
                 <div *ngIf="reactiveForm.controls['username'].errors.required">
                   Username es requerido.
                 </div>
@@ -106,23 +133,18 @@
               </div>
             </div>
           </div>
+
           <div class="form-row">
-            <label for="roles">Roles</label>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-6">
+              <label for="roles">Roles</label>
+            <div class="form-group col-3">
               <p-multiSelect [options]="rolesDisponibles" name="roles" id="roles" defaultLabel="Seleccione Role"
                 formControlName="roles"></p-multiSelect>
             </div>
-          </div>
-
-          <div class="form-row">
-              <div class="form-group col-6">
-                  <p-inputSwitch formControlName="enabled"></p-inputSwitch>
+            <label for="enabled">Habilitado</label>
+              <div class="form-group col-3">
+                  <p-inputSwitch formControlName="enabled" name="enabled" id="enabled"></p-inputSwitch>
               </div>
-            </div>
-
-
+          </div>
 
           <div class="row col-lg-12">
             <button type="submit" [disabled]="!reactiveForm.valid"
@@ -136,14 +158,13 @@
               Cancelar
             </button>
           </div>
-          {{reactiveForm.valid}}
-          {{reactiveForm.errors |json}}
+
         </form>
       </div>
     </div>
   </div>
 
-  <div class="col-lg-6" *ngIf="this.usuario?.id">
+  <div class="col-lg-6 mt-2" *ngIf="this.usuario?.id">
     <div class="card">
       <div class="card-body">
         <form ngNativeValidate [formGroup]="formCambioPassword" (ngSubmit)="cambiarClaveUsuario()"

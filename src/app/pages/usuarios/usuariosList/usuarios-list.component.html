@@ -61,7 +61,12 @@
           <ng-template pTemplate="body" let-rowUsuario let-columns="columns">
             <tr [pSelectableRow]="rowUsuario">
               <td *ngFor="let col of columns" [ngSwitch]="col.field">
-                <div *ngSwitchCase="'username'">{{rowUsuario.username}}</div>
+                <div *ngSwitchCase="'username'">
+                    <div><img
+                          [src]="rowUsuario.avatarUrl | imagen"  alt="Usuario"
+                          class="rounded-circle img-responsive img-50" /></div>
+                    {{rowUsuario.username}}
+                  </div>
                 <div *ngSwitchCase="'fullName'">{{rowUsuario.fullName}}</div>
                 <div *ngSwitchCase="'email'">{{rowUsuario.email}}</div>
                 <div *ngSwitchCase="'confirmationToken'">{{rowUsuario.confirmationToken}}</div>

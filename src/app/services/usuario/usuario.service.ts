@@ -178,28 +178,28 @@ export class UsuarioService {
       );
   }
 
-  actualizarPasswordUsuario(usuario: Usuario) {
-    const url: string = environment.URL_API + '/users/' + this.usuario.id + '/reset-password';
+  actualizarPasswordUsuario(usuarioParam: Usuario) {
+    const url: string = environment.URL_API + '/users/' + usuarioParam.id + '/reset-password';
 
     return this.http
-      .put(url, usuario)
+      .put(url, usuarioParam)
       .pipe(
         map((resp: any) => {
-          if (usuario.id === this.usuario.id && resp.token !== undefined) {
+          if (usuarioParam.id === this.usuario.id && resp.token !== undefined) {
             this.token = resp.token;
             // SI el usuario es el mismo logueado actualizo las variables de storage
-            const usuarioDB: Usuario = usuario; // La respuesta del backend me devuelve el usuario actualizado
+            const usuarioDB: Usuario = usuarioParam; // La respuesta del backend me devuelve el usuario actualizado
             this.saveLocalStorage(
               this.token,
               usuarioDB
             );
           }
-          return true;
+          return resp;
         }),
         catchError(error => {
           const exception: Exception
               =  this.commonService.handlerError(error);
-          Swal.fire(exception.title, exception.statusCode + ' ' + exception.body, 'error');
+          Swal.fire(exception.title, exception.body, 'error');
           return throwError(error);
         })
       );

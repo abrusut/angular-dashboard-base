@@ -38,7 +38,7 @@ const PAGES_ROUTES: Routes = [
       {
         path: 'usuarios/:id',
         component: UsuarioDetailComponent,
-        data: { titulo: 'Usuarios ABM',
+        data: { titulo: 'Usuarios',
                 description: 'Mantenimiento de usuarios de la APP' },
         canActivate: [ AdminGuard ]
       },

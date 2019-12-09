@@ -65,22 +65,21 @@
 
           <div class="form-group">
             <label for="oldPassword">Password Actual</label>
-            <div class="input-group">
-              <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input type="password" data-toggle="password" class="form-control" formControlName="oldPassword"
+            <input type="password" #oldPasswordField class="form-control" formControlName="oldPassword"
                 id="oldPassword" name="oldPassword" placeholder="Password Actual">
-            </div>
+            <span (click)="oldPasswordField.type=oldPasswordField.type=='password'?'text':'password'"
+                class="fa fa-fw field-icon toggle-password"
+                [ngClass]="(oldPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
           </div>
-          <div class="blockquote-footer center">Nueva Password debe tener:
-            <br />
-            7 caracteres, 1 mayuscula y 1 numero</div>
+
           <div class="form-group">
             <label for="newPassword">Nueva Password</label>
-            <div class="input-group">
-              <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input type="password" data-toggle="password" class="form-control" id="newPassword" name="newPassword"
-                formControlName="newPassword" placeholder="Password">
-              <div
+            <input type="password" class="form-control" id="newPassword" name="newPassword"
+                formControlName="newPassword" placeholder="Nueva Password" #newPasswordField>
+            <span (click)="newPasswordField.type=newPasswordField.type=='password'?'text':'password'"
+                class="fa fa-fw field-icon toggle-password"
+                [ngClass]="(newPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
+            <div
                 *ngIf="forma.controls['newPassword'].invalid && (forma.controls['newPassword'].dirty || forma.controls['newPassword'].touched)"
                 class="alert alert-danger">
                 <div *ngIf="forma.controls['newPassword'].errors.required">
@@ -91,14 +90,13 @@
                 </div>
               </div>
             </div>
-          </div>
           <div class="form-group">
             <label for="newRetypedPassword">Confirme Password</label>
-            <div class="input-group">
-              <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input type="password" data-toggle="password" formControlName="newRetypedPassword"
-                name="newRetypedPassword" class="form-control" id="newRetypedPassword" placeholder="Confirme Password">
-            </div>
+              <input type="password" formControlName="newRetypedPassword"
+                name="newRetypedPassword" #newRetypedPasswordField class="form-control" id="newRetypedPassword" placeholder="Confirme Password">
+              <span (click)="newRetypedPasswordField.type=newRetypedPasswordField.type=='password'?'text':'password'"
+                class="fa fa-fw field-icon toggle-password"
+                [ngClass]="(newRetypedPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
             <div
                 *ngIf="forma.controls['newRetypedPassword'].invalid && (forma.controls['newRetypedPassword'].dirty || forma.controls['newRetypedPassword'].touched)"
                 class="alert alert-danger">

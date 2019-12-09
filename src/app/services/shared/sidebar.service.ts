@@ -21,24 +21,22 @@ export class SidebarService {
   cargarMenu() {
     this.menu = [
       {
-        id: 1,
         titulo: 'Principal',
         icono: 'fas fa-fw fa-folder',
         url: '/dashboard' ,
         submenu: [
-          { titulo: 'Dashboard', url: '/dashboard'  },
-          { titulo: 'Profile', url: '/profile'  }
+          { titulo: 'Dashboard', url: '/dashboard', icono: 'pi pi-home'  },
+          { titulo: 'Profile', url: '/profile', icono: 'pi pi-user'  }
         ],
         roles: []
       },
       {
-        id: 2,
-        titulo: 'Mantenimientos',
+        titulo: 'Usuarios',
         icono: 'fas fa-fw fa-folder',
         url: '/usuarios',
         submenu: [
-          { titulo: 'Usuarios List', url: '/usuarios'  },
-          { titulo: 'Usuarios ABM', url: '/usuarios/nuevo'  }
+          { titulo: 'Listado', url: '/usuarios', icono: 'pi pi-users'  },
+          { titulo: 'Nuevo', url: '/usuarios/nuevo', icono: 'pi pi-user-plus'  }
         ],
         roles: ['ROLE_SUPER_ADMIN']
       }

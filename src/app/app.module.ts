@@ -28,6 +28,7 @@ import { SearchInputComponent } from './components/search-input/search-input.com
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

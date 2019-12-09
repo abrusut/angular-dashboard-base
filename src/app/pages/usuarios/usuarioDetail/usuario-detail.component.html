@@ -9,7 +9,7 @@
 
             <img *ngIf="imagenTemp" [src]="imagenTemp" class="img-thumbnail rounded mx-auto d-block" />
 
-            <img *ngIf="!imagenTemp" [src]="usuario.avatar | imagen" class="img-thumbnail rounded mx-auto d-block" />
+            <img *ngIf="!imagenTemp" [src]="usuario.avatarUrl | imagen" class="img-thumbnail rounded mx-auto d-block" />
 
             <input type="file" class="mt-2" (change)="seleccionImagen( $event.target.files[0] )">
 
@@ -48,6 +48,12 @@
               <div
                 *ngIf="reactiveForm.controls['username'].invalid && (reactiveForm.controls['username'].dirty || reactiveForm.controls['username'].touched)"
                 class="alert alert-danger">
+
+
+                <!-- div *ngIf="reactiveForm.controls['username'].errors.isExists">
+                    El nombre de usuario ya existe
+                  </div -->
+
                 <div *ngIf="reactiveForm.controls['username'].errors.pattern">
                     No debe tener espacios en blanco ni caracteres especiales.
                   </div>
@@ -62,8 +68,11 @@
           </div>
           <div class="form-group row" *ngIf="!this.usuario?.id">
             <div class="col-lg-6 col-sm-6 mb-3 mb-sm-0">
-              <input formControlName="password" data-toggle="password" name="password" class="form-control"
+              <input formControlName="password" name="password" #passwordField class="form-control"
                 type="password" placeholder="Password">
+                <span (click)="passwordField.type=passwordField.type=='password'?'text':'password'"
+                      class="fa fa-fw field-icon toggle-password"
+                      [ngClass]="(passwordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
             </div>
             <div
               *ngIf="reactiveForm.controls['password'].invalid && (reactiveForm.controls['password'].dirty || reactiveForm.controls['password'].touched)"
@@ -77,8 +86,11 @@
             </div>
 
             <div class="col-lg-6 col-sm-6">
-              <input formControlName="retypedPassword" data-toggle="password" name="retypedPassword"
-                class="form-control" type="password" required placeholder="Confirmar Password">
+              <input formControlName="retypedPassword" name="retypedPassword"
+                class="form-control" type="password" #retypedPasswordField required placeholder="Confirmar Password">
+                <span (click)="retypedPasswordField.type=retypedPasswordField.type=='password'?'text':'password'"
+                      class="fa fa-fw field-icon toggle-password"
+                      [ngClass]="(retypedPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
             </div>
 
             <div
@@ -174,27 +186,31 @@
 
           <div class="form-group">
             <label for="oldPassword">Password Actual</label>
-            <div class="input-group">
+
               <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input type="password" data-toggle="password" class="form-control" formControlName="oldPassword"
-                id="oldPassword" name="oldPassword" placeholder="Password Actual">
-            </div>
+              <input type="password" class="form-control" formControlName="oldPassword"
+                id="oldPassword" name="oldPassword" #oldPasswordField placeholder="Password Actual">
+                <span (click)="oldPasswordField.type=oldPasswordField.type=='password'?'text':'password'"
+                class="fa fa-fw field-icon toggle-password"
+                [ngClass]="(oldPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
           </div>
           <div class="form-group">
             <label for="newPassword">Nueva Password</label>
-            <div class="input-group">
               <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input type="password" data-toggle="password" class="form-control" id="newPassword" name="newPassword"
-                formControlName="newPassword" placeholder="Password">
-            </div>
+              <input type="password" class="form-control" id="newPassword" name="newPassword"
+                formControlName="newPassword" #newPasswordField placeholder="Password">
+                <span (click)="newPasswordField.type=newPasswordField.type=='password'?'text':'password'"
+                class="fa fa-fw field-icon toggle-password"
+                [ngClass]="(newPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
           </div>
           <div class="form-group">
             <label for="newRetypedPassword">Confirme Password</label>
-            <div class="input-group">
               <div class="input-group-addon"><i class="ti-lock"></i></div>
-              <input type="password" data-toggle="password" formControlName="newRetypedPassword"
-                name="newRetypedPassword" class="form-control" id="newRetypedPassword" placeholder="Confirme Password">
-            </div>
+              <input type="password" formControlName="newRetypedPassword"
+                name="newRetypedPassword" #newRetypedPasswordField class="form-control" id="newRetypedPassword" placeholder="Confirme Password">
+                <span (click)="newRetypedPasswordField.type=newRetypedPasswordField.type=='password'?'text':'password'"
+                class="fa fa-fw field-icon toggle-password"
+                [ngClass]="(newRetypedPasswordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
           </div>
           <div class="form-group " *ngIf="formCambioPassword.errors?.sonIguales && !formCambioPassword.pristine">
             <p class="text-danger">

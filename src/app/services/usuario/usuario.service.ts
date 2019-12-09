@@ -1,6 +1,6 @@
 import { Usuario } from '../../domain/usuario.domain';
 import { Observable, throwError } from 'rxjs';
-import { map, filter, catchError, mergeMap, mapTo } from 'rxjs/operators';
+import { map, filter, catchError, mergeMap, mapTo, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { SubirArchivoService } from '../subir-archivo/subir-archivo.service';
 import {
@@ -111,11 +111,18 @@ export class UsuarioService {
       catchError((error: HttpErrorResponse) => this.handleError(error))
     );
   }
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    // in a real world app, we may send the error to some remote logging infrastructure
-    // instead of just logging it to the console
-    this.log('error', error);
-    return throwError(error);
+  private handleError(err: HttpErrorResponse): Observable<never> {
+    let errorMessage = '';
+    if (err.error instanceof ErrorEvent) {
+
+        errorMessage = `An error occurred: ${err.error.message}`;
+    } else {
+
+        errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
+    }
+    console.error(errorMessage);
+
+    return throwError(err);
   }
 
   private log(level: string, message: any): void {
@@ -227,7 +234,7 @@ export class UsuarioService {
   findAllUsuarios(page: number , size: number , termino: string, multiSortMeta: SortMeta[]) {
     let url = `${environment.URL_API}/users?size=${size}&page=${page}`;
 
-    if (termino !== undefined) {
+    if (termino !== undefined && termino !== null && termino.length > 0) {
       url = `${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page}`;
     }
      // event.sortField = Field name to sort with
@@ -243,6 +250,18 @@ export class UsuarioService {
     }
 
     return this.http.get(url);
+  }
+
+
+  isUsernameExist(username: string): Observable<Usuario> {
+    const url = `${environment.URL_API}/users?username=${username}`;
+    const params = this.createHttpParams({});
+    return this.http.get<Usuario>(url, { params: params })
+              .pipe(
+                    tap(data => console.log('return: ' + JSON.stringify(data))),
+                    catchError((error: HttpErrorResponse) => this.handleError(error))
+                    );
+
   }
 
   findUsuarioById(id: number): Observable<Usuario> {

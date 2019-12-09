@@ -28,8 +28,11 @@
                       <input [ngModel]="username" name="username" class="form-control" type="text" required placeholder="Usuario">
                   </div>
                   <div class="form-group">
-                      <input ngModel data-toggle="password" name="password" class="form-control" type="password"
-                      required placeholder="Password">
+                      <input ngModel  name="password" class="form-control" type="password"
+                      required placeholder="Password" #passwordField>
+                      <span (click)="passwordField.type=passwordField.type=='password'?'text':'password'"
+                      class="fa fa-fw field-icon toggle-password"
+                      [ngClass]="(passwordField.type=='password')?' fa-eye':' fa-eye-slash'"></span>
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-checkbox small">

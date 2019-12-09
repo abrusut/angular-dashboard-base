@@ -3,6 +3,7 @@ export interface Usuario {
   fullName?: string;
   email?: string;
   avatar?: string;
+  avatarUrl?: string;
   roles?: Array<string>;
   id?: string;
   password?: string;

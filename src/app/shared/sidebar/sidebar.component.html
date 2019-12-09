@@ -36,7 +36,9 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">{{usuario.fullName}}:</h6>
-        <a class="collapse-item" routerLink="/profile" routerLinkActive="active">Profile</a>
+        <a class="collapse-item" routerLink="/profile" routerLinkActive="active">
+          <i class="pi pi-user-edit"></i>
+          Profile</a>
       </div>
     </div>
   </li>
@@ -68,7 +70,9 @@
                 <li *ngFor="let submenu of menu.submenu" style="list-style:none">
 
                     <span class="collapse-item pointer" routerLinkActive="active" [routerLink]="[submenu.url]">
-                        <i [class]="menu.icono"></i>
+
+                        <i *ngIf="submenu?.icono" [class]="submenu.icono"></i>
+                        <i *ngIf="!submenu?.icono" [class]="menu.icono"></i>
                         {{submenu.titulo}}
                     </span>
                 </li>

@@ -39,6 +39,16 @@ export class SidebarService {
           { titulo: 'Nuevo', url: '/usuarios/nuevo', icono: 'pi pi-user-plus'  }
         ],
         roles: ['ROLE_SUPER_ADMIN']
+      },
+      {
+        titulo: 'Configuraciones',
+        icono: 'fas fa-fw fa-folder',
+        url: '/atributo-configuracion',
+        submenu: [
+          { titulo: 'Listado', url: '/atributo-configuracion', icono: 'pi pi-cog'  },
+          { titulo: 'Nuevo', url: '/atributo-configuracion/nuevo', icono: 'pi pi-plus'  }
+        ],
+        roles: ['ROLE_SUPER_ADMIN']
       }
     ];
   }

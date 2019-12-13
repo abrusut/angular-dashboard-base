@@ -5,6 +5,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { element } from 'protractor';
 import { environment } from 'src/environments/environment';
 import { UsuarioService } from '../usuario/usuario.service';
+import * as moment from 'moment';
+import { DateUtils } from '../utils/dateUtils';
+import { isArray } from 'util';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -83,6 +87,45 @@ export class CommonService {
     });
     return isMessageForUser;
 
+  }
+
+  /**
+   * Funcion que convierte de Date a String una fecha, recorriendo las propiedades de un objeto
+   * Tambien puede recibir un date solo o un String y pasarlo a date si se especifica TRUE el parametro
+   * stringToDate
+   * @param object
+   * @param stringToDate
+   */
+  normalizePropertyDate( object: any, stringToDate: boolean = false) {
+    if (object === undefined || object === null) {
+      return null;
+    }
+
+    if (stringToDate) {
+      return DateUtils.convertStringToDate(object);
+    }
+
+    // Si es una fecha la devuelvo en string formateado
+    if (moment.isDate(object)) {
+      object = DateUtils.convertDateToString(object);
+      return object;
+    }
+
+    Object.keys(object).forEach((key: any) => {
+      const value: any = object[key];
+      if (value !== undefined && value !== null) {
+        if (moment.isDate(object)) {
+          object = DateUtils.convertDateToString(object);
+        }
+        if (moment(value, moment.ISO_8601, true).isValid()) {
+          object[key] = DateUtils.convertDateToString(value);
+        }
+        if (value !== undefined && (Array.isArray(value) || typeof value === 'object' )) {
+          return this.normalizePropertyDate(value);
+        }
+      }
+    });
+    return object;
   }
 
 }

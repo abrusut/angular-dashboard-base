@@ -10,4 +10,5 @@ export { SharedService } from './shared/shared.service';
 export { SidebarService } from './shared/sidebar.service';
 export { UsuarioService } from './usuario/usuario.service';
 export { CommonService } from './common/common.service';
+export { AtributoConfiguracionService } from './atributo-configuracion/atributo-configuracion.service';
 export { RouterExtService } from './shared/RouterExtService';

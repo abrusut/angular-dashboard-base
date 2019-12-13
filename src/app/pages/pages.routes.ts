@@ -8,6 +8,8 @@ import {ProfileComponent} from './profile/profile.component';
 import {VerificaTokenGuard} from '../services/guards/verifica-token.guard';
 import { UsuarioDetailComponent } from './usuarios/usuarioDetail/usuario-detail.component';
 import { UsuariosListComponent } from './usuarios/usuariosList/usuarios-list.component';
+import { AtributoConfiguracionListComponent } from './atributo-configuracion/atributo-configuracion-list/atributo-configuracion-list.component';
+import { AtributoConfiguracionDetailComponent } from './atributo-configuracion/atributo-configuracion-detail/atributo-configuracion-detail.component';
 
 
 /**
@@ -40,6 +42,20 @@ const PAGES_ROUTES: Routes = [
         component: UsuarioDetailComponent,
         data: { titulo: 'Usuarios',
                 description: 'Mantenimiento de usuarios de la APP' },
+        canActivate: [ AdminGuard ]
+      },
+      {
+        path: 'atributo-configuracion',
+        component: AtributoConfiguracionListComponent,
+        data: { titulo: 'Configuracion',
+                description: 'Mantenimiento de Configuraciones de la APP' },
+        canActivate: [ AdminGuard ]
+      },
+      {
+        path: 'atributo-configuracion/:id',
+        component: AtributoConfiguracionDetailComponent,
+        data: { titulo: 'Configuracion',
+                description: 'Mantenimiento de Configuraciones de la APP' },
         canActivate: [ AdminGuard ]
       },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full'}

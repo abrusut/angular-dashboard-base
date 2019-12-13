@@ -15,6 +15,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsuariosListComponent } from './usuarios/usuariosList/usuarios-list.component';
 import { UsuarioDetailComponent } from './usuarios/usuarioDetail/usuario-detail.component';
+import { AtributoConfiguracionListComponent } from './atributo-configuracion/atributo-configuracion-list/atributo-configuracion-list.component';
+import { AtributoConfiguracionDetailComponent } from './atributo-configuracion/atributo-configuracion-detail/atributo-configuracion-detail.component';
 
 
 
@@ -23,7 +25,9 @@ import { UsuarioDetailComponent } from './usuarios/usuarioDetail/usuario-detail.
         DashboardComponent,
         ProfileComponent,
         UsuariosListComponent,
-        UsuarioDetailComponent
+        UsuarioDetailComponent,
+        AtributoConfiguracionListComponent,
+        AtributoConfiguracionDetailComponent
     ],
     exports: [
         DashboardComponent

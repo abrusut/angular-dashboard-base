@@ -36,7 +36,9 @@ export class BreadcrumpngComponent implements OnInit {
     private meta: Meta,
     private routerService: RouterExtService
   ) {
-    this.getDataRoute().subscribe(data => {
+    this.getDataRoute().subscribe(snapshot => {
+      const data = snapshot.data;
+      const pathPrevio = data.pathPrevio;
       // console.log(data);
       if (data && data.titulo !== undefined) {
         this.label = data.titulo;
@@ -54,10 +56,18 @@ export class BreadcrumpngComponent implements OnInit {
 
         if ( !yaExiste ) {
           this.items = [
-            { label: 'Home' },
-            { label: 'Pages' }
+            { label: 'Home', url: '/#/dashboard' },
+            //{ label: 'Dashboard', url: 'dashboard' }
           ];
-          this.home = {icon: 'pi pi-home'};
+          this.home = {icon: 'pi pi-home', url: '/#/dashboard'};
+
+          if (pathPrevio !== null && pathPrevio !== undefined) {
+            if (pathPrevio.label !== null && pathPrevio.label !== undefined
+              && pathPrevio.path !== null && pathPrevio.path !== undefined ) {
+                  // add route previa
+                  this.items.push( {label : pathPrevio.label, url: pathPrevio.path} );
+              }
+          }
 
           // add current route
           this.items.push( {label : this.label, url: this.url} );
@@ -95,7 +105,8 @@ export class BreadcrumpngComponent implements OnInit {
     return this.router.events.pipe(
       filter(evento => evento instanceof ActivationEnd),
       map((evento: ActivationEnd) => {
-        return evento.snapshot.data;
+        // return evento.snapshot.data;
+        return evento.snapshot;
       })
     );
   }

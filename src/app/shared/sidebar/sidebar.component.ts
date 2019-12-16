@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
               public usuarioService: UsuarioService) { }
 
   ATRIBUTE_MINISTERIO = environment.ATRIBUTE_MINISTERIO;
+  ATRIBUTE_SISTEMA_NAME = environment.ATRIBUTE_SISTEMA_NAME;
 
   usuario: Usuario;
 

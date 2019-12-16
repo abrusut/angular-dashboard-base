@@ -22,23 +22,23 @@ export class RoleGuardPipe implements PipeTransform {
  */
 transform(menu: Array<any>): any {
 
-    const rolesDisponibles = environment.ROLES_ARRAY;
+    const rolesDisponibles = environment.ROLES_JERARQUIA;
     const rolesUserLogged = this.usuarioService.usuario.roles;
 
-    if ( rolesDisponibles === undefined || rolesDisponibles.length === 0 || menu === undefined ) {
+    if ( rolesDisponibles === undefined || rolesDisponibles === null || menu === undefined ) {
             Swal.fire(this.usuarioService.usuario.fullName, `Error de Configuracion,
                       debe declarar "roles" array en menu y Roles Disponibles en environment`, 'error');
             return null;
     }
 
     menu.forEach(elementMenu => {
-      console.log(elementMenu);
+      // console.log(elementMenu);
 
       // Analiza roles de cabecera de Menu
       if ( elementMenu.roles !== undefined && elementMenu.roles.length > 0) {
           elementMenu.roles.forEach(rol => {
               if (!this.securityService.hasRole(rol)) {
-                console.log(`no tiene rol necesario para menu ${elementMenu.id} ( ${elementMenu.titulo} ).
+                console.log(`no tiene rol necesario para menu ${elementMenu.url} ( ${elementMenu.titulo} ).
                           Roles configurados ${elementMenu.roles} roles de usuario ${rolesUserLogged}`);
                 menu.splice(menu.indexOf(elementMenu), 1);
               }
@@ -51,7 +51,7 @@ transform(menu: Array<any>): any {
             if (submenu.roles !== undefined && submenu.roles.length > 0) {
                 submenu.roles.forEach(rol => {
                   if (!this.securityService.hasRole(rol)) {
-                    console.log(`no tiene rol necesario para menu ${submenu.titulo} .
+                    console.log(`no tiene rol necesario para submenu ${submenu.titulo} .
                               Roles configurados ${submenu.roles} roles de usuario ${rolesUserLogged}`);
                     elementMenu['submenu'].splice(elementMenu['submenu'].indexOf(submenu), 1);
                   }

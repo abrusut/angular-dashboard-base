@@ -73,6 +73,7 @@ import {BlockUIModule} from 'primeng/blockui';
 
 
 import {PipesModule} from '../pipes/pipes.module';
+import { RoleVerifyDirective } from '../directivas/role-verify.directive';
 
 @NgModule({
   imports: [
@@ -82,7 +83,7 @@ import {PipesModule} from '../pipes/pipes.module';
     ReactiveFormsModule,
     PipesModule
     ],
-  declarations: [],
+  declarations: [RoleVerifyDirective],
   exports: [
     CommonModule,
     RouterModule,

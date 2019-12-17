@@ -25,10 +25,6 @@ import { PagesComponent } from './pages/pages.component';
 import { SharedModule } from './shared/shared.modulo';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

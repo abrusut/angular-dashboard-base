@@ -23,7 +23,7 @@ export class AdminGuard implements CanActivate {
       console.log('Bloqueado por AdminGuard');
       Swal.fire(this.usuarioService.usuario.fullName, `Usted ${this.usuarioService.usuario.fullName} no cuenta con los
       permisos adecuados para acceder a esta seccion`, 'error');
-      this.usuarioService.logout();
+      this.router.navigate(['/']);
       return false;
     }
   }

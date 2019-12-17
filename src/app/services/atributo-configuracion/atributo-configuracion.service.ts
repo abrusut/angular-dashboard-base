@@ -17,6 +17,7 @@ import { Exception } from 'src/app/domain/exception.domain';
 import { SortMeta } from 'primeng/api';
 import { AtributoConfiguracion } from 'src/app/domain/atributo.configuracion.domain';
 import { DateUtils } from '../utils/dateUtils';
+import { ServiceConfig } from '../serviceconfig';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +25,16 @@ import { DateUtils } from '../utils/dateUtils';
 export class AtributoConfiguracionService {
 
   pathEntityResource  = 'atributo-configuracions';
-  pathBase = `${environment.URL_API}/${this.pathEntityResource}`;
+
+  private get serviceBaseURL(): string {
+    return this.serviceConfig.context + '/api';
+  }
 
   constructor(
     public http: HttpClient,
     public router: Router,
-    public commonService: CommonService
+    public commonService: CommonService,
+    private serviceConfig: ServiceConfig
   ) {
 
   }
@@ -65,7 +70,7 @@ export class AtributoConfiguracionService {
   }
 
   guardar(atributoConfiguracion: AtributoConfiguracion) {
-    const url: string = this.pathBase;
+    const url: string = `${this.serviceBaseURL}/${this.pathEntityResource}`;
 
     if (atributoConfiguracion !== undefined && atributoConfiguracion.id !== undefined && Number(atributoConfiguracion.id) !== 0 ) {
      return this.actualizar(atributoConfiguracion);
@@ -82,7 +87,7 @@ export class AtributoConfiguracionService {
   }
 
   actualizar(atributoConfiguracion: AtributoConfiguracion) {
-    const url = `${this.pathBase}/${atributoConfiguracion.id}` ;
+    const url = `${this.serviceBaseURL}/${this.pathEntityResource}/${atributoConfiguracion.id}` ;
 
     return this.http
       .put(url, atributoConfiguracion)
@@ -100,10 +105,10 @@ export class AtributoConfiguracionService {
   }
 
   findAll(page: number , size: number , termino: string, multiSortMeta: SortMeta[]) {
-    let url = `${this.pathBase}?size=${size}&page=${page}`;
+    let url = `${this.serviceBaseURL}/${this.pathEntityResource}?size=${size}&page=${page}`;
 
     if (termino !== undefined && termino !== null && termino.length > 0) {
-      url = `${this.pathBase}/globalFilter?termino=${termino}&size=${size}&page=${page}`;
+      url = `${this.serviceBaseURL}/${this.pathEntityResource}/globalFilter?termino=${termino}&size=${size}&page=${page}`;
     }
      // event.sortField = Field name to sort with
     // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
@@ -126,7 +131,7 @@ export class AtributoConfiguracionService {
   }
 
   findById(id: number): Observable<AtributoConfiguracion> {
-    const url = `${this.pathBase}/${id}` ;
+    const url = `${this.serviceBaseURL}/${this.pathEntityResource}}/${id}` ;
     const params = this.createHttpParams({});
     return this.http.get<AtributoConfiguracion>(url, { params })
               .pipe(

@@ -39,7 +39,7 @@ export class UsuarioService {
 
   private get serviceBaseURL(): string {
     return this.serviceConfig.context + '/api';
-}
+  }
 
   renuevaToken() {
     let url: string = this.serviceBaseURL + '/login/renuevatoken';

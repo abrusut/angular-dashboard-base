@@ -23,7 +23,7 @@ export class SuperAdminGuard implements CanActivate {
       console.log('Bloqueado por SuperAdminGuard');
       Swal.fire(this.usuarioService.usuario.fullName, `Usted ${this.usuarioService.usuario.fullName} no cuenta con los
       permisos adecuados para acceder a esta seccion`, 'error');
-      this.usuarioService.logout();
+      this.router.navigate(['/']);
       return false;
     }
   }

@@ -13,7 +13,7 @@ export class MyHttpInterceptor implements HttpInterceptor {
   constructor(private router: Router, public usuarioService: UsuarioService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const re = '/login_check';
+    const re = '/api/users/login_check';
     // Exclude interceptor for login request:
     if (req.url.search(re) === -1) {
       if (localStorage.getItem('token') != null) {

@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { CommonService } from '../common/common.service';
 import { Exception } from 'src/app/domain/exception.domain';
 import { SortMeta } from 'primeng/api';
+import { ServiceConfig } from '../serviceconfig';
 
 @Injectable()
 export class UsuarioService {
@@ -29,14 +30,19 @@ export class UsuarioService {
     public http: HttpClient,
     public router: Router,
     public subirArchivoService: SubirArchivoService,
-    public commonService: CommonService
+    public commonService: CommonService,
+    private serviceConfig: ServiceConfig
   ) {
     // console.log("Servicio de usuarios");
     this.cargarStorage();
   }
 
+  private get serviceBaseURL(): string {
+    return this.serviceConfig.context + '/api';
+}
+
   renuevaToken() {
-    let url: string = environment.URL_API + '/login/renuevatoken';
+    let url: string = this.serviceBaseURL + '/login/renuevatoken';
     url += '?token=' + this.token;
     return this.http
       .get(url)
@@ -101,7 +107,7 @@ export class UsuarioService {
       localStorage.removeItem('username');
     }
 
-    const url: string = environment.URL_API + '/login_check';
+    const url: string = `${this.serviceBaseURL}/login_check`;
 
     return this.http.post(url, usuario).pipe(
       map((data: any) => {
@@ -143,7 +149,7 @@ export class UsuarioService {
   }
 
   guardarUsuario(usuario: Usuario) {
-    let url: string = environment.URL_API + '/users';
+    const url: string = `${this.serviceBaseURL}/users`;
 
     if (usuario !== undefined && usuario.id !== undefined && Number(usuario.id) !== 0 ) {
      return this.actualizarUsuario(usuario);
@@ -160,7 +166,7 @@ export class UsuarioService {
   }
 
   actualizarUsuario(usuario: Usuario) {
-    const url: string = environment.URL_API + '/users/' + usuario.id;
+    const url: string = `${this.serviceBaseURL}/users/${usuario.id}`;
 
     return this.http
       .put(url, usuario)
@@ -186,8 +192,7 @@ export class UsuarioService {
   }
 
   actualizarPasswordUsuario(usuarioParam: Usuario) {
-    const url: string = environment.URL_API + '/users/' + usuarioParam.id + '/reset-password';
-
+    const url: string = `${this.serviceBaseURL}/users/${usuarioParam.id}/reset-password`;
     return this.http
       .put(url, usuarioParam)
       .pipe(
@@ -232,10 +237,10 @@ export class UsuarioService {
   }
 
   findAllUsuarios(page: number , size: number , termino: string, multiSortMeta: SortMeta[]) {
-    let url = `${environment.URL_API}/users?size=${size}&page=${page}`;
+    let url = `${this.serviceBaseURL}/users?size=${size}&page=${page}`;
 
     if (termino !== undefined && termino !== null && termino.length > 0) {
-      url = `${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page}`;
+      url = `${this.serviceBaseURL}/users/globalFilter?termino=${termino}&size=${size}&page=${page}`;
     }
      // event.sortField = Field name to sort with
     // event.sortOrder = Sort order as number, 1 for asc and -1 for dec
@@ -254,7 +259,7 @@ export class UsuarioService {
 
 
   isUsernameExist(username: string): Observable<Usuario> {
-    const url = `${environment.URL_API}/users?username=${username}`;
+    const url = `${this.serviceBaseURL}/users?username=${username}`;
     const params = this.createHttpParams({});
     return this.http.get<Usuario>(url, { params: params })
               .pipe(
@@ -265,7 +270,7 @@ export class UsuarioService {
   }
 
   findUsuarioById(id: number): Observable<Usuario> {
-    const url = `${environment.URL_API}/users/${id}`;
+    const url = `${this.serviceBaseURL}/users/${id}`;
     const params = this.createHttpParams({});
     return this.http.get<Usuario>(url, { params: params })
               .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
@@ -273,7 +278,7 @@ export class UsuarioService {
   }
 
   findUsuarios(page: number , size: number, termino: string) {
-    const url = `${environment.URL_API}/users/globalFilter?termino=${termino}&size=${size}&page=${page} `;
+    const url = `${this.serviceBaseURL}/globalFilter?termino=${termino}&size=${size}&page=${page} `;
     return this.http.get(url);
   }
 

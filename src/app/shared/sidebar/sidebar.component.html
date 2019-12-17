@@ -64,7 +64,7 @@
     </a>
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-      <li *ngFor="let menu of sidebarService.menu | roleGuard" aria-expanded="false">
+      <li *ngFor="let menu of sidebarService.menu" aria-expanded="false">
             <h6 class="collapse-header pointer" [routerLink]="[menu.url]">{{menu.titulo}}({{menu.submenu.length}}):</h6>
 
             <ul aria-expanded="false" >

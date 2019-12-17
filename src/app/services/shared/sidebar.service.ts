@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {UsuarioService} from '../usuario/usuario.service';
+import { SecurityService } from '../guards/security.service';
 
 @Injectable()
 export class SidebarService {
@@ -14,7 +15,8 @@ export class SidebarService {
 
 
 
-  constructor( public usuarioService: UsuarioService) {
+  constructor( public usuarioService: UsuarioService,
+               public securityService: SecurityService) {
 
   }
 
@@ -48,8 +50,10 @@ export class SidebarService {
           { titulo: 'Listado', url: '/atributo-configuracion', icono: 'pi pi-cog'  },
           { titulo: 'Nuevo', url: '/atributo-configuracion/nuevo', icono: 'pi pi-plus'  }
         ],
-        roles: ['ROLE_SUPER_ADMIN']
+        roles: ['ROLE_ADMIN']
       }
     ];
+
+    this.securityService.checkPermision(this.menu);
   }
 }

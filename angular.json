@@ -75,7 +75,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-dashboard-base:build"
+            "browserTarget": "angular-dashboard-base:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {

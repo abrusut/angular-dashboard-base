@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 // Interceptor HTTP
 import { MyHttpInterceptor } from './my-http-interceptor';
@@ -40,10 +40,11 @@ import { SearchInputComponent } from './components/search-input/search-input.com
   imports: [
     APP_ROUTING,
     BrowserModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    ServiceModule,
+    ServiceModule.forRoot({context: '/app', debug: true}),    // Modulo de la app que tiene todos los services
     SharedModule,
     SweetAlert2Module.forRoot(),
     BrowserAnimationsModule,

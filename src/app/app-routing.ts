@@ -13,7 +13,7 @@ const APP_ROUTES: Routes = [
   {
     path: '',
     component: PagesComponent,
-    canActivate: [ LoginGuardGuard ],
+    //canActivate: [ LoginGuardGuard ],
     loadChildren: () => import('./pages/pages.modulo').then(page => page.PageModule)
   },
   { path: '**', component: NopagefoundComponent}

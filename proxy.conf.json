@@ -1,0 +1,11 @@
+{
+  "/app/*": {
+    "target": "http://localhost:83/symfony4_jwt_base/public/index.php",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/app": ""
+    },
+    "changeOrigin": false
+  }
+}

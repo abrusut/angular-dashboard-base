@@ -10,6 +10,7 @@ import { UsuarioDetailComponent } from './usuarios/usuarioDetail/usuario-detail.
 import { UsuariosListComponent } from './usuarios/usuariosList/usuarios-list.component';
 import { AtributoConfiguracionListComponent } from './atributo-configuracion/atributo-configuracion-list/atributo-configuracion-list.component';
 import { AtributoConfiguracionDetailComponent } from './atributo-configuracion/atributo-configuracion-detail/atributo-configuracion-detail.component';
+import { SuperAdminGuard } from '../services/guards/super.admin.guard';
 
 /**
  *   La "data" de cada ruta se usa para agregar meta tags dinamicamente y
@@ -35,7 +36,7 @@ const PAGES_ROUTES: Routes = [
     data: { titulo: 'Usuarios',
             description: 'Mantenimiento de usuarios de la APP',
             pathPrevio: { path: '/#/usuarios', label: 'Listado' } },
-    canActivate: [ AdminGuard ]
+    canActivate: [ SuperAdminGuard ]
   },
   {
     path: 'usuarios/:id',
@@ -43,7 +44,7 @@ const PAGES_ROUTES: Routes = [
     data: { titulo: 'Mantenimiento Usuarios',
             description: 'Mantenimiento de usuarios de la APP',
             pathPrevio: { path: '/#/usuarios', label: 'Listado' } },
-    canActivate: [ AdminGuard ]
+    canActivate: [ SuperAdminGuard ]
   },
   {
     path: 'atributo-configuracion',

@@ -153,7 +153,8 @@ import { RoleVerifyDirective } from '../directivas/role-verify.directive';
      ToolbarModule,
      TooltipModule,
      TreeModule,
-     TreeTableModule
+     TreeTableModule,
+     RoleVerifyDirective
   ],
   entryComponents: [],
   providers: [

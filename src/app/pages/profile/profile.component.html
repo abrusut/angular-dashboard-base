@@ -1,4 +1,14 @@
 <div class="row animated fadeIn">
+
+    <div class="col-lg-12 mb-2">
+      <ul class="list-group list-group-horizontal">
+        <li class="list-group-item active">Roles de {{this.usuario.fullName}}</li>
+        <li *ngFor="let rol of this.usuario.roles" class="list-group-item">
+          {{rol}}
+        </li>
+      </ul>
+    </div>
+
   <div class="col-lg-4">
 
     <div class="card">
@@ -28,6 +38,7 @@
             Guardar
           </button>
         </form>
+
       </div>
     </div>
   </div>

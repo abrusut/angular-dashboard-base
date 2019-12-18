@@ -11,8 +11,6 @@ import {ModalUploadComponent} from '../components/modal-upload/modal-upload.comp
 import { BreadcrumpngComponent } from './breadcrumpng/breadcrumpng.component';
 import { CommonsAppModule } from '../commons/commons.app.module';
 
-
-
 @NgModule({
     declarations: [
         NopagefoundComponent,

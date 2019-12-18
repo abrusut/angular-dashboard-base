@@ -127,11 +127,11 @@ export class AtributoConfiguracionService {
         this.commonService.normalizePropertyDate(atributosConfiguracion);
         return atributosConfiguracion;
       }),
-      catchError((error: HttpErrorResponse) => this.handleError(error))); ;
+      catchError((error: HttpErrorResponse) => this.handleError(error)));
   }
 
   findById(id: number): Observable<AtributoConfiguracion> {
-    const url = `${this.serviceBaseURL}/${this.pathEntityResource}}/${id}` ;
+    const url = `${this.serviceBaseURL}/${this.pathEntityResource}/${id}` ;
     const params = this.createHttpParams({});
     return this.http.get<AtributoConfiguracion>(url, { params })
               .pipe(

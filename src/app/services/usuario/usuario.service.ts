@@ -113,6 +113,7 @@ export class UsuarioService {
       map((data: any) => {
         const user: Usuario = data.user as Usuario;
         this.saveLocalStorage(data.token, user);
+        return user;
       }),
       catchError((error: HttpErrorResponse) => this.handleError(error))
     );

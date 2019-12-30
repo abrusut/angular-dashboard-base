@@ -14,7 +14,7 @@ export class VerificaTokenGuard implements CanActivate {
   canActivate(): Promise<boolean> | boolean {
     console.log('Inicio de verifica token guard');
     const token = this.usuarioService.token;
-    if (token === undefined || token.trim() === '') {
+    if (token === undefined || ( token !== undefined && token !== null && token.trim() === '')) {
       return   this.router.navigate(['/login']);
     }
     const payload = JSON.parse(atob( token.split('.')[1]));
